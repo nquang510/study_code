@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <style>
+    h1{
+      background-color: red;
+    }
+    .active {
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- onclick: có thể dùng cho tất cả các the html -->
+
+  <h1 id="box">1 số hàm trong javasscript</h1>
+
+  <button onclick="hamHide()">hide</button>
+
+  <button onclick="hamShow()">show</button>
+
+  <button onclick="hamAddClass()">add class active</button>
+
+  <button onclick="hamRemoveClass()">xoa class active</button>
+
+  <button id="abc" onclick="hamHasClass()">kiem tra class active</button>
+
+  <ul>
+    <li class="xx">menu1</li>
+    <li class="yy">menu1</li>
+    <li class="zz">menu1</li>
+    <li>menu1</li>
+  </ul>
+<!-- click vao Li nao thi them mau cho li do -->
+  
+  <!-- <p class="xxx">click vao the p</p> -->
+
+  <script>
+
+    
+
+
+    // sư kiện: là hành động tác động vào thẻ html : click, hover,change... 
+
+    // document: chi tới trang html
+    // getElementById: chỉ tới the html có id
+
+    // const theH1 = document.getElementById("box")/
+
+    function hamHide(){
+
+    
+
+      document.getElementById("box").style.display = "none"; // ẩn di
+    }
+
+    function hamShow(){
+      document.getElementById("box").style.display = "block"; //hien thi ra
+    }
+
+    function hamAddClass(){
+      document.getElementById("box").classList.add("active"); //them class active vao the html nay
+    }
+
+    function hamRemoveClass(){
+      document.getElementById("box").classList.remove("active"); //xoa class active vao the html nay
+    }
+
+    function hamHasClass(){
+      // classList.contains("active"): kiem tra class active trong trong the html k?
+      // - co thi tra ve true 
+      // - k thi tra ve false
+        
+      let checkClass = document.getElementById("box").classList.contains("active");
+      
+      alert(checkClass)
+// 
+        if (checkClass==true) {
+          // console.log("Có class active"); 
+          // p hide
+          // - xoa di
+          hamShow();
+          hamRemoveClass()
+
+        }else{
+          // console.log("k co class active"); 
+          // -them class vao active
+          // p show
+
+          hamHide()
+          hamAddClass()
+        }
+    }
+
+
+     
+    // chon het tat the Li 
+    // querySelector: chon 1 the html
+
+    let elements = document.querySelectorAll("li");
+
+    // chọn 1 the div co class abc
+    // let elements = document.querySelector("div.abc");
+
+      // duyệt qua từng the Li (for)
+      elements.forEach(function(item){
+        
+        // item : mỗi the li, click li nao thi item chính li do
+
+        // addEventListener: lắng nghe sư kiện click
+        item.addEventListener("click", function(){
+
+          
+          item.classList.add("active");
+         
+
+          
+         
+        })
+    })
+      
+      
+  </script>
+
+
+
+</body>
+</html>

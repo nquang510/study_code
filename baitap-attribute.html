@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* .hide {
+      display: none;
+    }
+    .show {
+      display: block;
+    }
+    
+    ul li {
+      display: inline-block;
+      margin: 0 10px;
+      background-color: gray;
+    }
+    .content img{
+        width: 300px;
+        height: 300px;
+    } */
+    /* ul{
+        display: flex;
+        list-style: none;
+        padding: 0;
+    }
+    li img{
+        width: 100px;
+        height: 100px;
+
+    } */
+    li{
+      background-color: yellow;
+      list-style: none;
+    }
+    .hide{
+      display: none;
+    }
+    .active{
+      background-color: red;
+      display: block;
+    }
+</style>
+<body>
+    <!-- <div class="demo">
+        <ul>
+            <li class="tab">Tin tức</li>
+            <li class="tab">Bóng đá</li>
+            <li class="tab">Thời trang</li>
+        </ul>
+
+        <div class="content">
+            <div class="hide">
+                <img src="https://cdnmedia.baotintuc.vn/Upload/rGkvwNpj74Z1EcpzQ6ltA/files/2020/09/tin-tuc-15920.jpg" >
+            </div>
+            <div class="hide">
+                <img src="https://images2.thanhnien.vn/528068263637045248/2026/1/5/photo-1767625204738-1767625205282739656851.jpeg" >
+            </div>
+            <div class="hide">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Carolina_Herrera_AW14_12.jpg" >
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- <img src="https://cdn-media.sforum.vn/storage/app/media/anh-dep-16.jpg" width="500px" height="500px" class="hinhlon">
+    <ul>
+        <li>
+            <img src="https://cdn-media.sforum.vn/storage/app/media/anh-dep-83.jpg" class="hinhnho">
+        </li>
+        <li>
+            <img src="https://wp-cms-media.s3.ap-east-1.amazonaws.com/hinh_anh_thien_nhien_va_phong_canh_giup_xua_tan_met_moi_va_cang_thang_2408fbaadf.jpg" class="hinhnho">
+        </li>
+        <li>
+            <img src="https://cdn-media.sforum.vn/storage/app/media/Van%20Pham/hinh-anh-viet-nam-dep.jpg" class="hinhnho">
+        </li>
+        <li>
+            <img src="https://png.pngtree.com/thumb_back/fh260/background/20240916/pngtree-enchanting-night-sky-hd-8k-wallpaper-stock-photographic-image-mesmerizing-in-image_16213258.jpg" class="hinhnho">
+        </li>
+        <li>
+            <img src="https://i.pinimg.com/736x/42/a1/06/42a1068eb0bcdb65da6e60bf49af66fe.jpg" class="hinhnho">
+        </li>
+    </ul> -->
+
+    <!-- <img id="img1" src="https://cdn-media.sforum.vn/storage/app/media/anh-dep-16.jpg" width="300px" height="300px">
+    <img id="img2" src="https://cdn-media.sforum.vn/storage/app/media/anh-dep-83.jpg" width="300px" height="300px">
+    <button id="btn">Click me</button> -->
+
+    <p>- click vao the Li nào thì show span con của Li đó ra</p>
+    <p>- tương tự trên nhưng hide the span cua Li khac di</p>
+    <p>- click vao Li nào đang có span hiện thi ra thi hide span do di </p>
+
+    <ul>
+        <li>
+            day la the Li
+            <span class="hide">day la the span</span>
+        </li>
+        <li>
+            day la the Li
+            <span class="hide">day la the span</span>
+        </li>
+        <li>
+            day la the Li
+            <span class="hide">day la the span</span>
+        </li>
+        <li>
+            day la the Li
+            <span class="hide">day la the span</span>
+        </li>
+  </ul>
+</body>
+    <!-- <script>
+        const theButton = document.getElementById("btn");
+        theButton.addEventListener("click", function(){
+            let img1 = document.getElementById("img1");
+            let img2 = document.getElementById("img2");
+            let getImg1 = img1.getAttribute("src");
+            let getImg2 = img2.getAttribute("src");
+            console.log(getImg1);
+            console.log(getImg2);
+            img1.setAttribute("src", getImg2);
+            img2.setAttribute("src", getImg1);
+        });
+    </script> -->
+    <!-- <script>
+        let hinhlon = document.querySelector(".hinhlon");
+        let srcHinhlon = hinhlon.getAttribute("src");
+        console.log(srcHinhlon);
+
+        let hinhnho = document.querySelectorAll(".hinhnho");
+        for(let i = 0; i < hinhnho.length; i++){
+            hinhnho[i].addEventListener("click", function(){
+                let srcHinhnho = hinhnho[i].getAttribute("src");
+                console.log(srcHinhnho);
+                hinhlon.setAttribute("src", srcHinhnho);
+            });
+        }
+    </script> -->
+    <!-- <script>
+        let tab = document.querySelectorAll(".tab");
+        let content = document.querySelectorAll(".content .hide");
+        for(let i = 0; i < tab.length; i++){
+            tab[i].addEventListener("click", function(){
+                for(let j = 0; j < content.length; j++){
+                    content[j].setAttribute("class", "hide");
+                }
+                content[i].setAttribute("class", "show");
+            });
+        }
+
+    </script> -->
+    <script>
+        let li = document.querySelectorAll("li");
+        let span = document.querySelectorAll(".hide");
+        for(let i = 0; i < li.length; i++){
+            li[i].addEventListener("click", function(){
+                if(span[i].classList.contains("hide")){
+                    span[i].setAttribute("class", "active");
+                } else {
+                    span[i].setAttribute("class", "hide");
+                }
+            });
+        }
+    </script>
+</html>

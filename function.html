@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* span{
+        background-color:red;
+    }
+    .active{
+        background-color:blue;
+    } */
+
+</style>
+<body>
+    <!-- bai tap 1:
+
+  - tao 1 the "span"
+    + click vao the "span" lan dau thi them class "ACTIVE" vao the "span"
+    + click vao the "span" lan 2 , neu co class "ACTIVE" thi xoa class do di.
+    tuong tu lan 3 va 4. -->
+    <!-- <span>Hãy click vào đây</span>
+    <p>nhật quang</p>
+    <ul>
+        <li id="xx">menu1</li>
+        <li id="yy">menu1</li>
+        <li id="zz">menu1</li>
+        <li id="ww">menu1</li>
+    </ul> -->
+    <button>hide</button>
+    <p>Quang</p>
+    <script>
+        // const theSpan = document.querySelector("span");
+        // theSpan.onclick = function(){
+        //     if(theSpan.classList.contains("active")){
+        //         theSpan.classList.remove("active");
+        //     }else{
+        //         theSpan.classList.add("active");
+        //     }
+        // }
+    
+//     bai tap 2:
+//   - tao 1 the "span"
+//     + click vao the "span" lan dau thi them class "ACTIVE" vao the "span" va dong thoi HIDE P di
+//     + click vao the "span" lan 2 , neu co class "ACTIVE" thi xoa class do di va show the P len
+//     tuong tu lan 3 va 4.
+        // const theSpan = document.querySelector("span");
+        // theSpan.onclick = function(){
+        //     if(theSpan.classList.contains("active")){
+        //         theSpan.classList.remove("active");
+        //         document.querySelector("p").style.display = "block";
+        //     }else{
+        //         theSpan.classList.add("active");
+        //         document.querySelector("p").style.display = "none";
+        //     }
+        // }
+
+// bai tap 3:
+//    - Tao 1 ul va 4 LI, cho mỗi LI 1 class hoặc ID rieng.
+//    - Click vao Li có CLASS/ID nao  thi them màu vao cho Li do
+        const theLi = document.querySelectorAll("li");
+        theLi.forEach(function(li){
+            li.addEventListener("click", function(){
+            if (this.id == "xx") {
+                this.style.backgroundColor = "red";
+            } else if (this.id == "yy") {
+                this.style.backgroundColor = "blue";
+            } else if (this.id == "zz") {
+                this.style.backgroundColor = "green";
+            } else if (this.id == "ww") {
+                this.style.backgroundColor = "yellow";
+            }
+            })
+        })
+// tạo 1 button va the p
+// viet code click button:
+// - lân 1 thi hide p di
+// - lan 2 thi show p len
+// - lan 3 thi hide p
+// - 4 thi show p
+        const theButton = document.querySelector("button");
+        const theP = document.querySelector("p");
+        theButton.onclick = function(){
+            if (theP.style.display !== "none") {
+                theP.style.display = "none";
+            } else {
+                theP.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>

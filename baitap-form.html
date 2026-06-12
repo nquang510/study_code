@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .form-container{
+        width: 500px;
+        height: 500px;
+        border: 1px solid black;
+        margin: 0 auto;
+    }
+    .form-group{
+        margin: 10px;
+    }
+    .form-group label{
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    h1{
+        text-align: center;
+        font-size: 20px;
+        color: white;
+        background-color: rgb(78, 131, 78);
+        padding: 10px 0 10px 0;
+        margin: 0;
+    }
+</style>
+<body>
+    <div class="form-container">
+        <h1>Góp ý - liên hệ với 24h</h1>
+        <form id="login-form" action="https://www.24h.com.vn">
+            <div class="form-group">
+                <label>Họ và tên:</label>
+                <input type="text" id="name">
+                <small id ="nameError"></small>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" id="email">
+                <small id ="emailError"></small>
+            </div>
+            <div class="form-group">
+                <label>Số điện thoại:</label>
+                <input type="text" id="phone">
+                <small id ="phoneError"></small>
+            </div>
+            <div class="form-group">
+                <label>Địa chỉ nơi cư trú:</label>
+                <input type="text" id="address">
+                <small id ="addressError"></small>
+            </div>
+            <div class="form-group">
+                <label>Tiêu đề:</label>
+                <input type="text" id="subject">
+                <small id ="subjectError"></small>
+            </div>
+            <div class="form-group">
+                <label>Nội dung:</label>
+                <textarea id="content" cols="30" rows="10"></textarea>
+                <small id ="contentError"></small>
+            </div>
+            <div class="form-group">
+                <label>Đánh giá</label>
+                <select id="rating">
+                    <option value="">--Chọn mức độ hài lòng--</option>
+                    <option value="hailong">Hài lòng</option>
+                    <option value="khonghailong">Không hài lòng</option>
+                </select>
+                <small id="ratingError"></small>
+            </div>
+            <div class="form-group">
+                <label>Mã captcha:</label>
+                <input type="checkbox" id="captcha">
+                <label for="captcha">Tôi không phải là người máy</label>
+                <small id ="captchaError"></small>
+            </div>
+            <button type="submit">Gửi</button>
+            <button>Thoát</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById('login-form');
+        const nameInput = document.getElementById('name');
+        const nameError = document.getElementById('nameError');
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        const phoneInput = document.getElementById('phone');
+        const phoneError = document.getElementById('phoneError');
+        const addressInput = document.getElementById('address');
+        const addressError = document.getElementById('addressError');
+        const subjectInput = document.getElementById('subject');
+        const subjectError = document.getElementById('subjectError');
+        const contentInput = document.getElementById('content');
+        const contentError = document.getElementById('contentError');
+        const captchaInput = document.getElementById('captcha');
+        const captchaError = document.getElementById('captchaError');
+        const ratingInput = document.getElementById('rating');
+        const ratingError = document.getElementById('ratingError');
+
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            name = nameInput.value;
+            email = emailInput.value;
+            phone = phoneInput.value;
+            address = addressInput.value;
+            subject = subjectInput.value;
+            content = contentInput.value;
+
+            nameError.textContent = '';
+            emailError.textContent = '';
+            phoneError.textContent = '';
+            addressError.textContent = '';
+            subjectError.textContent = '';
+            contentError.textContent = '';
+            captchaError.textContent = '';
+            ratingError.textContent = '';
+
+            let err = false;
+
+            if(name === ''){
+                nameError.textContent = 'Vui lòng nhập họ và tên';
+                err = true;
+            }
+            if(email === ''){
+                emailError.textContent = 'Vui lòng nhập email';
+                err = true;
+            }
+            if(phone === ''){
+                phoneError.textContent = 'Vui lòng nhập số điện thoại';
+                err = true;
+            }
+            if(address === ''){
+                addressError.textContent = 'Vui lòng nhập địa chỉ nơi cư trú';
+                err = true;
+            }
+            if(subject === ''){
+                subjectError.textContent = 'Vui lòng nhập tiêu đề';
+                err = true;
+            }
+            if(content === ''){
+                contentError.textContent = 'Vui lòng nhập nội dung góp ý';
+                err = true;
+            }
+            if(!captchaInput.checked){
+                captchaError.textContent = 'Vui lòng click vào ô xác nhận';
+                err = true;
+            }
+            if(ratingInput.value === ''){
+                ratingError.textContent = 'Vui lòng chọn mức độ hài lòng';
+                err = true;
+            }
+            if(err === false){
+                form.submit(); //Cho form chạy action
+                alert("Đăng nhập thành công");
+            }
+            
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+  </head>
+  <body>
+    
+    <!-- len chatgpt gõ:  hàm getAttribute trong javascript dung làm gi, cho vdu cụ thẻ? -->
+
+    - hàm getAttribute: lấy gia tri thuoc tinh cua the html
+      
+
+      <!-- cong thuc:  the-html.getAttribute("ten thuoc tinh") -->
+
+    - hàm setAttribute(): thêm hoặc thay đôi gia tri thuoc tinh
+
+      <!-- cong thuc:  the-html.setAttribute("ten thuoc tinh", "gia tri moi") -->
+
+     
+
+
+      thuộc tinh: href, class, src, id
+      gia tri: bên trong thuoc tính (index.php, xx, images.png)
+
+      <a href="xx.html" id="abc" class="classAbc">hoc js</a>
+      <img  src="avatar.png" alt="avatar user" >
+
+      <img id="avatar"  alt="avatar user" src="https://cdn.24h.com.vn/upload/4-2024/images/2024-11-13//adt1731491622-1-61537-82-0-864-1251-crop-14794__anh_cat_3_2.jpeg" >
+
+     <button id="btn" >Click me</button>
+
+
+    <script>
+
+
+
+
+      // ----------
+
+      const theButton = document.getElementById("btn");
+
+       theButton.addEventListener("click", function(){
+
+          // -----------------lấy ra-------
+          theA = document.getElementById("abc");
+          x = theA.getAttribute("id")
+          alert(x); 
+
+          // theA.setAttribute("href", "yy.html");
+           
+
+
+
+
+          
+
+          img1 = document.getElementById("avatar");
+          yy = img1.getAttribute("src");
+          // alert(yy); 
+          
+          // alert(img.getAttribute("src")); 
+        
+          // -----------------thay đổi--------------
+         
+
+          // theA.setAttribute("class", "baovic");
+           
+          // img1.setAttribute("src", "hinh-dep-11.jpg");    
+           //
+       })
+
+       
+    </script>
+
+   
+
+
+
+    <!-- <button class="myBtn">Click 1</button>
+    <button class="myBtn">Click 2</button>
+
+    <script>
+    let buttons = document.querySelectorAll(".myBtn");
+
+    // chay qua tầng the
+    buttons.forEach(function(btn) {
+
+      btn.addEventListener("click", function() {
+        // console.log(this); // Thẻ <button> đang click
+        this.style.backgroundColor = "orange"; // đổi màu nút vừa click
+      });
+      
+    });
+    </script> -->
+
+  </body>
+  </html>
