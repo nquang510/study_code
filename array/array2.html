@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let getLocal = localStorage.getItem("mang1")
+        if(getLocal){
+            xx = JSON.parse(getLocal)
+            console.log(xx);
+        }
+        xx.map(function(value,key){
+            if(key == 9){
+                console.log(value);
+            }
+        })
+        var mang2 = []
+        xx.map(function(value,key){
+            if(key <= 5){
+                mang2.push(value)
+            }
+        })
+        console.log(mang2);
+        var yy = JSON.stringify(mang2)
+        console.log(yy);
+        localStorage.setItem("mang2",yy)
+    </script>
+    
+</body>
+</html>

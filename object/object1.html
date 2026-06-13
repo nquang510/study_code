@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let obj1 = {
+            name: "Nguyen Phan Nhat Quang",
+            age: 21,
+            address: "Da nang",
+            job: "student"
+        }
+        console.log(obj1);
+        let aa = JSON.stringify(obj1)
+        console.log(aa);
+        localStorage.setItem("obj1",aa)
+    </script>
+</body>
+</html>

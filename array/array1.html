@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var mang1 =[]
+        for(i = 0; i <11; i++){
+            mang1.push(i)
+        }
+        console.log(mang1);
+        var xx = JSON.stringify(mang1)
+        console.log(xx);
+        localStorage.setItem("mang1",xx)
+    </script>
+</body>
+</html>

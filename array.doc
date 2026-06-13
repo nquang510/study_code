@@ -1,0 +1,150 @@
+// mảng là 1 biến có thể chứa nhiều value.
+
+        // cách khai bao 1 mảng như sau:
+        var mang1 = [] //hoạc array new() => dung chung cac ngon ngu
+
+        // thêm giá trị vào mảng thi dùng ham push như sau
+         
+            mang1.push("iphone")
+            mang1.push("nokia","samsung")
+            // mang1.push('abc')
+            // mang1.push(abc2)
+
+            // console.log ra xem có gi
+            console.log(mang1);
+
+            // key: value
+            // 0:"iphone"
+            // 1:"nokia"
+            // 2:"samsung
+
+            // length:3
+
+            // length: cho biết mảng có 3 phân tử
+
+           
+            // lấy độ dài của mảng ra thì (muốn đếm xem co bnhieu cai trong mang): 
+            // console.log(mang1.length)
+
+             // sau này muốn kiểm tra mảng có data k thì?
+            if(mang1.length > 0 ){
+
+                // console.log("co")
+            }
+
+            // key: tự động tao ra, bắt đầu bằng 0 va tang len, key < length 1 dvi
+
+            // cu pháp: lấy value trong mảng ra: tên-mang[key]
+            // vdu lấy samsung ra thi
+            // console.log(mang1[2])
+// 
+            // dùng for hiện thị từng value trong mảng ra
+
+            // do key bắt đầu = 0, nên cho i chạy từ 0
+            for (var i = 0; i < mang1.length; i++) {
+                // 
+                // console.log(mang1[i])
+
+                // vdu muốn dùng vòng 1 lấy ra 1 cái key = 2 thi
+                    if(i==1){
+                        // console.log(mang1[i]) 
+                    }
+            }
+
+            // vòng lặp MAP như for nhưng cách dùng khác nhau:
+
+            // vong lặp này có 1 điểm là k cần đếm i=0 va length gi hết,
+
+            // có bnhieu value va key thi nó tự lấy ra hết
+
+            // value va key bên trong này cũng chinh la value va key của mang1
+
+             
+            // xx = []
+            mang1.map(function(value, key ){
+                // // // lay value ra
+                // console.log(value)
+               
+                // lấy key ra
+                // console.log(key)
+
+                // tuong tự for, muốn lay 1 cái ra thôi, vdu
+                if(key == 2){
+                    console.log(value)  //=>lay value tuong ung key=2
+                }
+            })
+
+            // giờ tao 1 mảng bằng số như sau
+            var mang2 = [];
+               
+               for (var i = 1; i < 11; i++) { 
+                    // if( i < 5){
+                        mang2.push(i)
+                    // }
+                    
+               }
+               // console.log(mang2) //1=> 10
+// 
+                // dùng for viết hàm tinh tổng các số trong mảng
+                var s=0
+                for (var i = 0; i < mang2.length; i++) {
+                    s = s + mang2[i]// => lay value
+                }
+                
+// 
+                // dung MAP tinh tông cac số trong mang
+                s = 0
+                mang2.map(function(value, key){
+                
+                    s = s +  value //lay value ra
+                })
+                console.log(s)
+// 
+               
+
+
+            // phần tiếp theo hướng dẫn sử dung localStorage 
+            // localStorage là 1 bộ nhớ tạm,luu trữ data ở dạng chuỗi va luu tren trang web
+
+            // chỉ cần đưa data vào LOCAL thì qua trang html khác có thể lay ra dung
+
+            // và nó chỉ cho phép luu trữ data o dang CHUỖI nên khi dua array vào phải chuyển sang dang chuỗi trc như sau:
+
+            // vdu dua mang2 ở trên vào thì:
+            // console.log(mang2)
+            
+            // [1,2,3,4,..10]
+
+            // JSON.stringify: CHUYEN SANG CHUỖI
+            var xx = JSON.stringify(mang2)
+            // console.log(xx) 
+            // "[1,2,3....10]"
+
+            localStorage.setItem("anh", xx)
+
+            // nghia la đưa chuỗi xx vao localstorage bang tên demo
+            // chạy thử xem nó luu trên web la nằm ở đâu
+
+            // sau khi xem đã có thì thử qua trang khác lấy ra xem
+
+            //Object cũng tương tự mảng là một biến đặc biệt có thể chứa nhiều giá trị cùng lúc 
+            
+            //Khai báo một object rỗng như sau
+            let demo = {}
+
+            //Them value vào object thì có 2 cách 
+            demo['xx']= "Nhật Quang"
+            demo.yy= "Đẹp trai"
+
+            //Dùng dấu . hay [] đều được nhưng dấu . thì không dùng được cho số
+
+            //để lấy length ra thì
+            //console.log(Object.keys(demo1).length)
+
+            //Và kiểm tra object có data không
+            //if (Object.key(demo1).length > 0){
+                console.log("có")
+            }
+
+            //Đưa object demo2 vào trong demo1, dùng 'abc' làm key như sau
+            demo1["abc"] = demo2
