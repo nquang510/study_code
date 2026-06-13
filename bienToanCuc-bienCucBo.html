@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="form1">
+        <form id="form1">
+            <div class="form1-group">
+                <label>Email:</label>
+                <input type="text" id="email" placeholder="Nhập email...">
+                <small id ="emailError"></small>
+            </div>
+            <div class="form1-group">
+                <label>Mật khẩu:</label>
+                <input type="password" id="password" placeholder="Nhập mật khẩu...">
+                <small id ="passwordError"></small>
+            </div>
+            <button type="submit">Đăng nhập</button>
+        </form>
+    </div>
+    <div class="form2">
+        <form id="form2">
+            <button type="submit">Click</button>
+        </form>
+    </div>
+    <script>
+        let luu_email= ''; //Biến toàn cục
+        let luu_password= ''; // Biến toàn cục
+        const form1 = document.getElementById("form1");
+        const form2 = document.getElementById("form2");
+        const emailInput = document.getElementById("email");
+        const emailError = document.getElementById("emailError");
+        const passwordInput = document.getElementById("password");
+        const passwordError = document.getElementById("passwordError");
+        form1.addEventListener("submit", function(e){
+            e.preventDefault();
+            email = emailInput.value;
+            password = passwordInput.value;
+
+            emailError.textContent = "";
+            passwordError.textContent = "";
+
+            let err= false;
+
+            if(email === ""){
+                emailError.textContent = "Vui lòng nhập email";
+                err = true;
+            }
+
+            if(password === ""){
+                passwordError.textContent = "Vui lòng nhập mật khẩu";
+                err = true;
+            }
+            if(err === false){
+                luu_email = email;
+                luu_password = password;
+                alert("Đăng nhập thành công");
+                return false;
+            }
+        });
+        form2.addEventListener("submit", function(e){
+            e.preventDefault();
+            console.log(luu_email);
+            console.log(luu_password);
+            return false;
+        });
+    </script>
+</body>
+</html>

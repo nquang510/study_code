@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .register, .login{
+        width: 300px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .registerForm-group, .loginForm-group{
+        margin-bottom: 15px;
+    }
+    label{
+        display: block;
+        margin-bottom: 5px;
+    }
+    input{
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    small{
+        color: red;
+    }
+</style>
+<body>
+    <div class="register">
+        <form id="registerForm">
+            <div class="registerForm-group">
+                <label>Email:</label>
+                <input type="text" id="email-register" placeholder="Nhập email...">
+                <small id ="emailErrorRegister"></small>
+            </div>
+            <div class="registerForm-group">
+                <label>Số điện thoại:</label>
+                <input type="text" id="phone-register" placeholder="Nhập số điện thoại...">
+                <small id ="phoneErrorRegister"></small>
+            </div>
+            <div class="registerForm-group">
+                <label>Mật khẩu:</label>
+                <input type="password" id="password-register" placeholder="Nhập mật khẩu...">
+                <small id ="passwordErrorRegister"></small>
+            </div>
+            <button type="submit">Đăng ký</button>
+        </form>
+    </div>
+    <div class="login">
+        <form id="loginForm">
+            <div class="registerForm-group">
+                <label>Email:</label>
+                <input type="text" id="email-login" placeholder="Nhập email...">
+                <small id ="emailErrorLogin"></small>
+            </div>
+            <div class="registerForm-group">
+                <label>Mật khẩu:</label>
+                <input type="password" id="password-login" placeholder="Nhập mật khẩu...">
+                <small id ="passwordErrorLogin"></small>
+            </div>
+            <button type="submit">Đăng nhập</button>
+        </form>
+    </div>
+    <script>
+        let luu_email= ''; //Biến toàn cục
+        let luu_password= ''; // Biến toàn cục
+        const register = document.getElementById("registerForm");
+        const login = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email-register");
+        const emailErrorRegister = document.getElementById("emailErrorRegister");
+        const phoneInput = document.getElementById("phone-register");
+        const phoneErrorRegister = document.getElementById("phoneErrorRegister");
+        const passwordInput = document.getElementById("password-register");
+        const passwordErrorRegister = document.getElementById("passwordErrorRegister");
+        register.addEventListener("submit", function(e){
+            e.preventDefault();
+            email = emailInput.value;
+            password = passwordInput.value;
+            phone = phoneInput.value;
+
+            emailErrorRegister.textContent = "";
+            phoneErrorRegister.textContent = "";
+            passwordErrorRegister.textContent = "";
+
+            let err= false;
+
+            if(email === ""){
+                emailErrorRegister.textContent = "Vui lòng nhập email";
+                err = true;
+            }
+
+            if(phone === ""){
+                phoneErrorRegister.textContent = "Vui lòng nhập số điện thoại";
+                err = true;
+            }
+
+            if(password === ""){
+                passwordErrorRegister.textContent = "Vui lòng nhập mật khẩu";
+                err = true;
+            }
+            if(err === false){
+                luu_email = email;
+                luu_password = password;
+                alert("Đăng ký thành công");
+                return false;
+            }
+        });
+        login.addEventListener("submit", function(e){
+            e.preventDefault();
+            const emailInputLogin = document.getElementById("email-login");
+            const passwordInputLogin = document.getElementById("password-login");
+            const emailErrorLogin = document.getElementById("emailErrorLogin");
+            const passwordErrorLogin = document.getElementById("passwordErrorLogin");
+            emailLogin = emailInputLogin.value;
+            passwordLogin = passwordInputLogin.value;
+            emailErrorLogin.textContent = "";
+            passwordErrorLogin.textContent = "";
+            let err_login= false;
+            if(emailLogin === ""){
+                emailErrorLogin.textContent = "Vui lòng nhập email";
+                err_login = true;
+            }
+            if(passwordLogin === ""){
+                passwordErrorLogin.textContent = "Vui lòng nhập mật khẩu";
+                err_login = true;
+            }
+            if(err_login === false){
+                if(emailLogin === luu_email && passwordLogin === luu_password){
+                    alert("Đăng nhập thành công");
+                } else {
+                    alert("Email hoặc mật khẩu không đúng");
+                }
+            }
+            console.log(luu_email);
+            console.log(luu_password);
+            return false;
+        });
+    </script>
+</body>
+</html>
