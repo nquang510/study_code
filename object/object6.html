@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let getLocal = localStorage.getItem("obj5")
+        if(getLocal){
+            dd = JSON.parse(getLocal)
+        }
+        console.log(dd);
+        Object.values(dd).map(value => {
+            if(value === 9){
+                console.log("9")
+            }
+        })
+        let obj6 = {}
+        for(let key in dd){
+            if(dd[key] > 5) {
+                obj6[key] = dd[key]
+            }
+        }
+        console.log(obj6);
+        let ee = JSON.stringify(obj6)
+        localStorage.setItem("obj6",ee)
+    </script>
+</body>
+</html>

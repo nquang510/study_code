@@ -10,10 +10,18 @@
         let getLocal = localStorage.getItem("obj1")
         if(getLocal){
             aa = JSON.parse(getLocal)
-            console.log(aa);
         }
-        let obj2 = {}
-        
+        Object.values(aa).map(function(value, index){
+            console.log(value);
+            console.log(index);
+        })
+        let obj2={
+            phone: "0968380641"
+        }
+        aa["phone"] = obj2;
+        console.log(aa);
+        let bb = JSON.stringify(aa)
+        localStorage.setItem("obj2",bb)
     </script>   
 </body>
 </html>

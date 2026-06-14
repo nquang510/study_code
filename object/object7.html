@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let getLocal = localStorage.getItem("obj5")
+        if(getLocal){
+            dd = JSON.parse(getLocal)
+        }
+        console.log(dd);
+        let obj7 = {}
+        for(i= 11; i < 21; i++){
+            obj7[i] = i
+        }
+        console.log(obj7);
+        let merge = {
+            ...dd,
+            ...obj7
+        }
+        console.log(merge);
+        let sum = 0;
+        Object.values(merge).map(value => {
+            sum = sum + value
+        })
+        console.log(sum);
+    </script>
+</body>
+</html>
