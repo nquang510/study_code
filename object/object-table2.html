@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+<body>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+        
+        </tbody>
+    </table>
+    <script>
+        let getLocal = localStorage.getItem("objCha");
+        if(getLocal){
+            let objCha = JSON.parse(getLocal);
+            console.log(objCha);
+            const tbody = document.getElementById("table-body");
+            tbody.innerHTML = Object.values(objCha).map(value => {
+                return `
+                <tr>
+                    <td>${value.xx}</td>
+                    <td>${value.yy}</td>
+                </tr>
+                `
+            }).join("");
+        }
+    </script>
+</body>
+</html>

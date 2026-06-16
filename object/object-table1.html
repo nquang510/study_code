@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+<body>
+    <!-- ke khung ke bảng -->
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th>email</th>
+                <th>ten</th>
+            </tr>
+        </thead>
+      <tbody id="table-body">
+        
+      </tbody>
+    </table>
+    <script>
+        // var getLocal = localStorage.getItem("quanghuy")
+        // kiểm tra có hay k? 
+        // if(getLocal){
+        //console.log(getLocal) // sẽ tra ve 1 chuoi "[1,2,3,4..10]"
+               
+        // JSON.parse: chuyên chuỗi về lại kiêu data cũ
+        // demo  = JSON.parse(getLocal)
+        // console.log(demo) // [1,2,3,4,..10] // tra ve lai mảng như cu
+        // }
+        
+        const students = [
+            { id: 1, name: "An", age: 20 },
+            { id: 2, name: "Bình", age: 22 },
+            { id: 3, name: "Chi", age: 21 }
+        ];  
+        // demo MAP THEO ARR
+        const tbody = document.getElementById("table-body");
+            tbody.innerHTML = students.map(value => `
+                <tr>
+                    <td>${value.id}</td>
+                    <td>${value.name}</td>
+                    <td>${value.age}</td>
+                </tr>
+                    `).join("");
+        // demo MAP THEO OBJECT
+        tbody.innerHTML = Object.values(students).map(value => {
+        // --- Khu vực tính toán ---   
+        const currentYear = new Date().getFullYear();
+        const birthYear = currentYear - value.age;
+        const status = value.age >= 18 ? "Đủ tuổi" : "Chưa đủ tuổi"; 
+                // --- Trả về kết quả ---
+        return `
+        <tr>
+            <td>${value.id}</td>
+            <td>${value.name}</td>
+            <td>${value.age} (Sinh năm: ${birthYear})</td>
+            <td>${status}</td>
+        </tr>
+                `;
+            }).join("");
+    </script>
+</body>
+</html>

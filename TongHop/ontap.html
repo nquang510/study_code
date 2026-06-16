@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.ancestors * { 
+  display: block;
+  border: 2px solid blue;
+  color: black;
+  padding: 5px;
+  margin: 15px;
+}
+.active{
+  background-color: red;
+}
+.ancestors * span,
+.ancestors * input{
+  color: red;
+}
+</style>
+
+</head>
+
+
+router- > controller (truyen data ) -> view (truyen nguoc lại)
+
+<body class="ancestors">body (great-great-grandparent)
+  
+    <ul class="xx">ul xx (second ancestor - second grandparent) 
+      
+        <ul>ul (first ancestor - first grandparent)
+        
+            <li>li (direct parent)
+                <span>bạn đã lấy được đoạn text bên trong span</span>
+                <input type="text" name="" value="0763688368">
+                <img src="xxx.png">
+            </li>
+        </ul>
+    </ul>  
+ 
+<script>
+   // querySelector: tim kiem the html/id/class con
+
+   // closest: nguoc lai querySelector, quay trở ra the cha/id/class cha
+
+   // textContent: gấn và lay doan text ben trong html 
+
+   // value: lay giá và set giá trị vào  input
+  
+
+   // this: dai dien cho the đang click vao
+
+   // setAttribute, getAttribute: lay gia tri thuoc tinh cua the html
+
+  let element = document.querySelector("li")
+      element.addEventListener("click", () => {
+    
+    //Thêm thuộc tính active cho thẻ span
+    //element.querySelector("span").classList.add("active");
+
+    //Thêm thuộc tính active cho thẻ ul class xx
+    //element.closest("ul.xx").classList.add("active"); 
+
+    //Khi click vào thẻ span thì alert ra đoạn text bên trong thẻ span
+    //let xx = element.querySelector("span").textContent;
+    //alert(xx)
+
+    //Khi click vào thẻ span thì thay thế đoạn text bên trong thẻ span
+    //element.querySelector("span").textContent = "đã thay thế đoạn text trong the span"; 
+
+    //Khi click vào thẻ span thì alert ra đoạn text bên trong thẻ span của thẻ ul class xx
+    //let xx = element.closest("ul.xx").querySelector("span").textContent; 
+    //alert(xx)
+    
+    //Khi click vào thẻ span thì thay thế đoạn text bên trong thẻ span của thẻ ul class xx
+    //element.closest("ul.xx").querySelector("span").textContent = "đã thay thế đoạn text trong the span";
+
+    //let xx = element.closest("ul.xx").querySelector("input").value; //Khi nhập vào thẻ input html sẽ hiểu giá trị đó là giá trị chuỗi nếu muốn thực hiển phép toán thì phải chuyển nó về kiểu số
+    //let yy = parseInt(xx); //chuyển chuỗi về số nguyên
+    //let a = xx + 1; //Đây là 1 phép toán chuỗi vdu "1" + 1 = 11
+    //let a = yy + 1; //Thực hiện phép toán như bình thường
+    //alert(a
+    //alert(xx)
+
+    //Khi click vào thẻ span thì thay thế giá trị của thẻ input của thẻ ul class xx thành 9999
+    //element.closest("ul.xx").querySelector("input").value = 9999;
+
+    //Khi click vào thẻ span thì alert ra giá trị của thuộc tính src của thẻ img của thẻ ul class xx
+    //let xx = element.closest("ul.xx").querySelector("img").getAttribute("src") 
+    //alert(xx)
+
+
+    
+
+      
+   })
+
+   
+  
+ 
+
+</script>
+
+</body>
+
+</html>
