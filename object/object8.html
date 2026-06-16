@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let obj8 = {
+            'quang1': {
+                'xx': 'nquang1',
+                'yy': 'nquang1@gmail.com'
+            },
+            'quang2': {
+                'xx': 'nquang2',
+                'yy': 'nquang2@gmail.com'
+            },
+            'quang3': {
+                'xx': 'nquang3',
+                'yy': 'nquang3@gmail.com'
+            },
+            'quang4': {
+                'xx': 'nquang4',
+                'yy': 'nquang4@gmail.com'
+            }
+        }
+        //Dùng map hoặc for in ra: quang1 - nquang1
+        for (let key in obj8) {
+            console.log(key + " - " + obj8[key].xx);
+        }
+
+        let arr = [
+            {id: 'quang', name: 'nhatquang', age: 21},
+            {id: 'duc', name: 'triduc', age: 22},
+            {id: 'sang', name: 'phucsang', age: 23},
+        ];
+        //Viết hàm chuyển đổi sang object
+        
+        let obj9 = {};
+        for (let i = 0; i < arr.length; i++) {
+            obj9[arr[i].id] = {
+                id: arr[i].id,
+                name: arr[i].name,
+                age: arr[i].age
+            };
+        }
+        console.log(obj9);
+
+        //Viết hàm chuyển đổi sang mảng sau: user = [quang , duc , sang]
+        let user = Object.keys(obj9);
+        console.log(user);
+    </script>
+</body>
+</html>
