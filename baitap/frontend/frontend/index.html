@@ -89,7 +89,12 @@
 								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li>
+									<a href="cart.html">
+										<i class="fa fa-shopping-cart"></i> Cart
+										<span id="cart-count" style="background: #FE980F; color: white; padding: 2px 6px; border-radius: 50%; font-size: 12px; margin-left: 5px;">0</span>
+									</a>
+								</li>
 								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
@@ -356,7 +361,7 @@
 						<h2 class="title text-center">Features Items</h2>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" id ="product1">
 										<div class="productinfo text-center">
 											<img class ="img" src="images/home/product1.jpg" alt="" />
 											<h2 class = "price">$56</h2>
@@ -381,7 +386,7 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" id="product2">
 									<div class="productinfo text-center">
 										<img class ="img" src="images/home/product2.jpg" alt="" />
 										<h2 class="price">$56</h2>
@@ -406,7 +411,7 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" id="product3">
 									<div class="productinfo text-center">
 										<img class ="img" src="images/home/product3.jpg" alt="" />
 										<h2 class="price">$56</h2>
@@ -431,7 +436,7 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" id="product4">
 									<div class="productinfo text-center">
 										<img class="img" src="images/home/product4.jpg" alt="" />
 										<h2 class="price">$56</h2>
@@ -457,7 +462,7 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" id="product5">
 									<div class="productinfo text-center">
 										<img class="img" src="images/home/product5.jpg" alt="" />
 										<h2 class="price">$56</h2>
@@ -483,7 +488,7 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" id="product6">
 									<div class="productinfo text-center">
 										<img class="img" src="images/home/product6.jpg" alt="" />
 										<h2 class="price">$56</h2>
@@ -1065,5 +1070,6 @@
 	<script src="js/price-range.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
+	<script src="js/cart.js"></script>
 </body>
 </html>
