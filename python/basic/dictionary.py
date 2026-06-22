@@ -23,3 +23,16 @@ for name, age in people.items():
 
 # Bài 2: Viết chương trình nhận vào một dictionary chứa tên sinh viên và điểm số của họ, sau đó trả về danh sách các sinh viên có điểm lớn hơn hoặc bằng 8.​
 
+def high_achievers(students):
+   achievers = {name: score for name, score in students.items() if score >= 8}
+   return achievers
+
+student_scores = {
+   "Alice": 9,
+   "Bob": 7.5,
+   "Charlie": 8,
+   "David": 6.5,
+   "Eva": 8.5
+}
+result = high_achievers(student_scores)
+print(result)  # Output: ['Alice', 'Charlie', 'Eva']
