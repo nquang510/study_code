@@ -1,6 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import re # Thư viện regex để kiểm tra email
+from werkzeug.security import generate_password_hash, check_password_hash # Thư viện để mã hóa mật khẩu
+from routes.login import login_bp # Import Blueprint từ routes/login.py
 
 app = Flask(__name__)
+app.register_blueprint(login_bp) # Đăng ký Blueprint cho các route liên quan đến đăng nhập
+
 def generate_students(count):
     students = []
     for i in range(1, count + 1):
@@ -58,6 +63,5 @@ def sum2():
 def forStep():
     numbers = list(range(1, 101, 2))
     return render_template('forStep.html', numbers=numbers)
-
 if __name__ == '__main__':
     app.run(debug=True)
