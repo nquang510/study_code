@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+import os
+from flask import Flask, render_template, request, send_from_directory
 import re # Thư viện regex để kiểm tra email
 from werkzeug.security import generate_password_hash, check_password_hash # Thư viện để mã hóa mật khẩu
 from routes.login import login_bp # Import Blueprint từ routes/login.py
@@ -63,5 +64,8 @@ def sum2():
 def forStep():
     numbers = list(range(1, 101, 2))
     return render_template('forStep.html', numbers=numbers)
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
 if __name__ == '__main__':
     app.run(debug=True)
