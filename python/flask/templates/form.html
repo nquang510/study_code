@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <style>
         .error {
             color: red;
@@ -12,8 +11,10 @@
     </style>
 </head>
 <body>
-    <h1>Đăng nhập</h1>
-    <form method="POST" action="/login">
+    <style>
+    </style>
+    <h1>Đăng ký</h1>
+    <form method="POST" action="/form">
         <label>Email:</label>
         <input type="text" name="email" value="{{email}}">
         <br>
@@ -27,13 +28,18 @@
         {%if errors.get('password') %}
             <span class="error">{{ errors['password']}}</span><br>
         {%endif%}
-
         <br>
-        {% if errors.get('login') %}
-            <br>
-            <span class="error"><strong>Lỗi:</strong> {{ errors['login'] }}</span><br>
-        {% endif %}
-        <button type="submit">Đăng nhập</button>
+
+        <label>City:</label>
+        <input type="city" name="city" value="{{city}}"> 
+        <br>
+        {%if errors.get('city') %}
+            <span class="error">{{ errors['city']}}</span><br>
+        {%endif%}
+        <br>
+        
+        <button type="submit">Gửi</button>
     </form>
+    <a href="/table">Xem bảng</a>
 </body>
 </html>

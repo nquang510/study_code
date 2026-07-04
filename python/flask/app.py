@@ -2,10 +2,16 @@ import os
 from flask import Flask, render_template, request, send_from_directory
 import re # Thư viện regex để kiểm tra email
 from werkzeug.security import generate_password_hash, check_password_hash # Thư viện để mã hóa mật khẩu
+from routes.register import register_bp # Import Blueprint từ routes/register.py
 from routes.login import login_bp # Import Blueprint từ routes/login.py
+from routes.form import form_bp # Import Blueprint từ routes/form.py
 
 app = Flask(__name__)
+app.register_blueprint(register_bp) # Đăng ký Blueprint cho các route liên quan đến đăng ký
 app.register_blueprint(login_bp) # Đăng ký Blueprint cho các route liên quan đến đăng nhập
+app.register_blueprint(form_bp) # Đăng ký Blueprint cho các route liên quan đến form
+app.secret_key = '051005'  # Thêm khóa bí mật cho Flask
+
 
 def generate_students(count):
     students = []

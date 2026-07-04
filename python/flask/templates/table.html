@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Email</th>
+            <th>Password</th>
+            <th>City</th>
+        </tr>
+        {% for item in session_data %}
+        <tr>
+            <td>{{ item.email }}</td>
+            <td>{{ item.password }}</td>
+            <td>{{ item.city }}</td>
+        </tr>
+        {% endfor %} 
+    </table>
+    <a href="/form">Quay lại</a>
+</body>
+</html>

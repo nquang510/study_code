@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <style>
         .error {
             color: red;
@@ -12,8 +11,10 @@
     </style>
 </head>
 <body>
-    <h1>Đăng nhập</h1>
-    <form method="POST" action="/login">
+    <style>
+    </style>
+    <h1>Đăng ký</h1>
+    <form method="POST" action="/register" enctype="multipart/form-data">
         <label>Email:</label>
         <input type="text" name="email" value="{{email}}">
         <br>
@@ -29,11 +30,13 @@
         {%endif%}
 
         <br>
-        {% if errors.get('login') %}
-            <br>
-            <span class="error"><strong>Lỗi:</strong> {{ errors['login'] }}</span><br>
-        {% endif %}
-        <button type="submit">Đăng nhập</button>
+        <label>Chọn ảnh đại diện:</label>
+        <input type="file" name="avatar">
+        <br>
+        {%if errors.get('file') %}
+        <span class="error">{{ errors['file']}}</span><br>
+        {%endif%}
+        <button type="submit">Đăng ký</button>
     </form>
 </body>
 </html>
