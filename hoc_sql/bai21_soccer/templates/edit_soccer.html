@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa cầu thủ</title>
+</head>
+<body>
+    <h2>Sửa cầu thủ</h2>
+    <form method='post'>
+        <p>
+            Tên cầu thủ:<br>
+            <input type='text' name='tenCauThu' value='{{ soccer['tenCauThu'] }}' required>
+        </p>
+
+        <p>
+            Tuổi:<br>
+            <input type='number' name='tuoi' value='{{ soccer['tuoi'] }}' required>
+        </p>
+
+        <p>
+            Quốc tịch:<br>
+            <input type='text' name='quocTich' value='{{ soccer['quocTich'] }}' required>
+        </p>
+
+        <p>
+            Vị trí:<br>
+            <input type='text' name='viTri' value='{{ soccer['viTri'] }}' required>
+        </p>
+
+        <p>
+            Lương:<br>
+            <input type='number' step="0.01" name='luong' value='{{ soccer['luong'] }}' required>
+        </p>
+        <button type='submit'>Cập nhật cầu thủ</button>
+    </form>
+
+    <p>
+        <a href="/list_soccer">Quay lại danh sách</a>
+    </p>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách cầu thủ</title>
+</head>
+<body>
+    <h2>Danh sách cầu thủ</h2>
+    <p>
+        <a href="add_soccer">Thêm cầu thủ</a>
+    </p>
+
+    <table border='1' cellpadding='5'>
+        <tr>
+            <th>ID</th>
+            <th>Tên cầu thủ</th>
+            <th>Tuổi</th>
+            <th>Quốc tịch</th>
+            <th>Vị trí</th>
+            <th>Lương</th>
+            <th>Action</th>
+        </tr>
+
+        {% for soccer in soccer %}
+        <tr>
+            <td>{{ soccer['id'] }}</td>
+            <td>{{ soccer['tenCauThu'] }}</td>
+            <td>{{ soccer['tuoi'] }}</td>
+            <td>{{ soccer['quocTich'] }}</td>
+            <td>{{ soccer['viTri'] }}</td>
+            <td>{{ soccer['luong'] }}</td>
+            <td>
+                <a href="edit_soccer/{{ soccer['id'] }}">Sửa</a>
+                <a href="delete_soccer/{{ soccer['id'] }}" onclick="return confirm('Bạn có chắc chắn muốn xóa cầu thủ này?')">Xóa</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
