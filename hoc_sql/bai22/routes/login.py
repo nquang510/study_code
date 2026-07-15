@@ -44,6 +44,6 @@ def login():
                 session['user_id'] = user['id']
                 session['email'] = user['email']
                 session['name'] = user['name']
-                return "Đăng nhập thành công!"
+                return redirect(url_for('home.home'))
 
     return render_template('login.html', errors=errors, email=email, password=password)

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f4f7;
+            margin: 0;
+        }
+        .welcome-box {
+            max-width: 700px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 40px;
+            text-align: center;
+        }
+        .welcome-box h1 { color: #333; margin-bottom: 10px; }
+        .welcome-box p { color: #666; font-size: 15px; }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="welcome-box">
+        {% if session.get('user_id') %}
+            <h1>Xin chào, {{ session.get('name') }}!</h1>
+            <p>Bạn đã đăng nhập thành công vào hệ thống.</p>
+        {% else %}
+            <h1>Chào mừng đến với MyShop</h1>
+            <p>Vui lòng đăng nhập hoặc đăng ký để tiếp tục.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

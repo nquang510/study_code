@@ -45,6 +45,8 @@ def register():
     name = ""
     files = []
     
+    show_success = session.pop('register_success', False)
+    
     if request.method == 'POST':
         email = request.form.get('email','').strip()
         password = request.form.get('password','').strip()
@@ -101,10 +103,8 @@ def register():
                         (email, hashed_password, name, avatar_filename)
                     )
                 conn.commit()
+                session['register_success'] = True
+                return redirect(url_for('register.register'))
             finally:
-                conn.close()
-
-            session['email'] = email
-            return "Đăng ký thành công và đã lưu thông tin!"
-            
-    return render_template('register.html', errors=errors, email=email, password=password)
+                conn.close()            
+    return render_template('register.html', errors=errors, email=email, password=password, name=name, success=show_success)
