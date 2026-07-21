@@ -1,78 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sản phẩm của tôi</title>
-    <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f7; margin: 0; }
-        .layout { display: flex; max-width: 1000px; margin: 30px auto; gap: 20px; padding: 0 20px; }
-        .sidebar { width: 220px; background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 16px 0; height: fit-content; }
-        .sidebar ul { list-style: none; margin: 0; padding: 0; }
-        .sidebar a { display: block; padding: 12px 20px; color: #333; text-decoration: none; font-weight: 600; font-size: 14px; }
-        .sidebar a:hover { background: #f0f0f5; }
-        .sidebar a.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-        .content { flex: 1; background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 28px 32px; }
-        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-add {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 6px; font-size: 14px; font-weight: 600;
-        }
-        .empty { color: #888; text-align: center; padding: 40px 0; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-        .product-card { border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
-        .product-card img { width: 100%; height: 140px; object-fit: cover; }
-        .product-info { padding: 10px 12px; }
-        .product-info h4 { margin: 0 0 6px 0; font-size: 15px; color: #333; }
-        .product-info .price { color: #764ba2; font-weight: 700; margin: 0 0 10px 0; }
-        .product-actions { display: flex; gap: 8px; }
-        .product-actions a { flex: 1; text-align: center; padding: 6px 0; border-radius: 5px; font-size: 13px; text-decoration: none; font-weight: 600; }
-        .btn-edit { background: #eef1ff; color: #4c5fd5; }
-        .btn-delete { background: #fdecea; color: #e74c3c; }
-    </style>
-</head>
-<body>
-    {% include 'header.html' %}
+{% extends 'layout/main.html' %}
 
-    <div class="layout">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="{{ url_for('account.account') }}">Account</a></li>
-                <li><a href="{{ url_for('product.my_product') }}" class="active">My Product</a></li>
-            </ul>
-        </aside>
+{% block title %}My Product{% endblock %}
 
-        <main class="content">
-            <div class="content-header">
-                <h2 style="margin:0;">Sản phẩm của tôi</h2>
-                <a href="{{ url_for('product.add_product') }}" class="btn-add">+ Add</a>
-            </div>
+{% block content %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Account</h2>
+						<div class="panel-group category-products" id="accordian">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{{ url_for('account.account') }}">account</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{{ url_for('product.my_product') }}" style="color:#764ba2;font-weight:700;">My product</a></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+						<h2 style="margin:0;">My Product</h2>
+						<a href="{{ url_for('product.add_product') }}" class="btn btn-default">+ Add</a>
+					</div>
 
-            {% if products and products|length > 0 %}
-                <div class="product-grid">
-                    {% for p in products %}
-                    <div class="product-card">
-                        {% if p.image %}
-                            <img src="{{ url_for('uploaded_file', filename=p.image) }}">
-                        {% else %}
-                            <img src="https://via.placeholder.com/200x140?text=No+Image">
-                        {% endif %}
-                        <div class="product-info">
-                            <h4>{{ p.title }}</h4>
-                            <p class="price">{{ "{:,.0f}".format(p.price) }} đ</p>
-                            <div class="product-actions">
-                                <a class="btn-edit" href="{{ url_for('product.edit_product', product_id=p.id) }}">Edit</a>
-                                <a class="btn-delete" href="{{ url_for('product.delete_product', product_id=p.id) }}"
-                                   onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này?')">Delete</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p class="empty">Không có sản phẩm nào.</p>
-            {% endif %}
-        </main>
-    </div>
-</body>
-</html>
+					{% if products and products|length > 0 %}
+					<div class="table-responsive cart_info">
+						<table class="table table-condensed">
+							<thead>
+								<tr class="cart_menu">
+									<td class="image">image</td>
+									<td class="description">name</td>
+									<td class="price">price</td>
+									<td class="total">action</td>
+								</tr>
+							</thead>
+							<tbody>
+								{% for p in products %}
+								<tr>
+									<td class="cart_product">
+										{% if p.image %}
+											<img src="{{ url_for('uploaded_file', filename=p.image) }}" alt="" style="width:80px;height:80px;object-fit:cover;">
+										{% else %}
+											<img src="https://via.placeholder.com/80" alt="">
+										{% endif %}
+									</td>
+									<td class="cart_description">
+										<h4>{{ p.title }}</h4>
+									</td>
+									<td class="cart_price">
+										<p>{{ "{:,.0f}".format(p.price) }} đ</p>
+									</td>
+									<td class="cart_total">
+										<a href="{{ url_for('product.edit_product', product_id=p.id) }}">edit</a>
+										&nbsp;|&nbsp;
+										<a href="{{ url_for('product.delete_product', product_id=p.id) }}"
+										   onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này?')">delete</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% else %}
+						<p style="text-align:center; color:#888; padding:30px 0;">Không có sản phẩm nào.</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

@@ -1,25 +1,24 @@
 import os
 from functools import wraps
 from flask import Blueprint, render_template, request, session, redirect, url_for, current_app
-from werkzeug.utils import secure_filename
 from db import get_connection
 
 product_bp = Blueprint('product', __name__)
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if 'user_id' not in session:
+        if not session.get('is_login'):
             return redirect(url_for('login.login'))
         return func(*args, **kwargs)
     return wrapper
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-# ------------------- DANH SÁCH PRODUCT CỦA MEMBER -------------------
 @product_bp.route('/my-product')
 @login_required
 def my_product():
@@ -37,7 +36,6 @@ def my_product():
     return render_template('my_product.html', products=products)
 
 
-# ------------------- ADD PRODUCT -------------------
 @product_bp.route('/add-product', methods=['GET', 'POST'])
 @login_required
 def add_product():
@@ -61,6 +59,7 @@ def add_product():
                     errors['price'] = 'Giá không hợp lệ'
             except ValueError:
                 errors['price'] = 'Giá phải là số'
+
         if not image or image.filename == '':
             errors['image'] = 'Vui lòng chọn ảnh sản phẩm'
         elif not allowed_file(image.filename):
@@ -69,7 +68,7 @@ def add_product():
         if not errors:
             UPLOAD_FOLDER = os.path.join(current_app.root_path, 'uploads')
             os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-            filename = secure_filename(image.filename)
+            filename = image.filename
             image.save(os.path.join(UPLOAD_FOLDER, filename))
 
             conn = get_connection()
@@ -88,14 +87,12 @@ def add_product():
     return render_template('add_product.html', errors=errors, title=title, price=price)
 
 
-# ------------------- EDIT PRODUCT -------------------
 @product_bp.route('/edit-product/<int:product_id>', methods=['GET', 'POST'])
 @login_required
 def edit_product(product_id):
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
-            # Chỉ cho sửa product của chính mình
             cursor.execute(
                 "SELECT * FROM products WHERE id=%s AND id_user=%s",
                 (product_id, session['user_id'])
@@ -127,11 +124,11 @@ def edit_product(product_id):
                 errors['image'] = 'Chỉ cho phép ảnh png, jpg, jpeg, gif'
 
             if not errors:
-                filename = product['image']  # giữ ảnh cũ nếu không upload ảnh mới
+                filename = product['image']
                 if image and image.filename != '':
                     UPLOAD_FOLDER = os.path.join(current_app.root_path, 'uploads')
                     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-                    filename = secure_filename(image.filename)
+                    filename = image.filename
                     image.save(os.path.join(UPLOAD_FOLDER, filename))
 
                 with conn.cursor() as cursor:
@@ -142,7 +139,6 @@ def edit_product(product_id):
                 conn.commit()
                 return redirect(url_for('product.my_product'))
 
-            # Nếu có lỗi, cập nhật lại product tạm để hiển thị đúng giá trị vừa nhập
             product['title'] = title
             product['price'] = price
     finally:
@@ -151,14 +147,12 @@ def edit_product(product_id):
     return render_template('edit_product.html', errors=errors, product=product)
 
 
-# ------------------- DELETE PRODUCT -------------------
 @product_bp.route('/delete-product/<int:product_id>')
 @login_required
 def delete_product(product_id):
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
-            # Chỉ cho xoá product của chính mình
             cursor.execute(
                 "DELETE FROM products WHERE id=%s AND id_user=%s",
                 (product_id, session['user_id'])

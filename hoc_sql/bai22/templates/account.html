@@ -1,112 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang cá nhân</title>
-    <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f4f4f7;
-            margin: 0;
-        }
-        .layout {
-            display: flex;
-            max-width: 1000px;
-            margin: 30px auto;
-            gap: 20px;
-            padding: 0 20px;
-        }
-        .sidebar {
-            width: 220px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            padding: 16px 0;
-            height: fit-content;
-        }
-        .sidebar ul { list-style: none; margin: 0; padding: 0; }
-        .sidebar a {
-            display: block;
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .sidebar a:hover { background: #f0f0f5; }
-        .sidebar a.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-        }
-        .content {
-            flex: 1;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            padding: 28px 32px;
-        }
-        .content h2 { margin-top: 0; color: #333; }
-        label { display: block; font-weight: 600; color: #333; margin-top: 16px; margin-bottom: 6px; }
-        input[type="text"], input[type="email"] {
-            width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
-        }
-        input[type="file"] { width: 100%; padding: 8px 0; }
-        .error { color: #e74c3c; font-size: 13px; margin-top: 4px; display: inline-block; }
-        .success {
-            background: #eafaf1; border: 1px solid #a3e4c1; color: #1e7e46;
-            padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;
-        }
-        .avatar-preview { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin: 8px 0; display: block; }
-        button[type="submit"] {
-            margin-top: 24px; padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer;
-        }
-        button[type="submit"]:hover { opacity: 0.9; }
-    </style>
-</head>
-<body>
-    {% include 'header.html' %}
+{% extends 'layout/main.html' %}
 
-    <div class="layout">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="{{ url_for('account.account') }}" class="active">Account</a></li>
-                <li><a href="{{ url_for('product.my_product') }}">My Product</a></li>
-            </ul>
-        </aside>
+{% block title %}Trang cá nhân{% endblock %}
 
-        <main class="content">
-            <h2>Thông tin cá nhân</h2>
+{% block content %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Account</h2>
+						<div class="panel-group category-products" id="accordian">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{{ url_for('account.account') }}" style="color:#764ba2;font-weight:700;">Account</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{{ url_for('product.my_product') }}">My product</a></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<div class="blog-post-area">
+						<h2 class="title text-center">Update user</h2>
 
-            {% if success %}
-                <div class="success">{{ success }}</div>
-            {% endif %}
+						{% if success %}
+							<p style="color:green; text-align:center;">{{ success }}</p>
+						{% endif %}
 
-            <form method="POST" action="{{ url_for('account.account') }}" enctype="multipart/form-data">
-                <label>Email:</label>
-                <input type="text" name="email" value="{{ user.email }}">
-                {% if errors.get('email') %}<span class="error">{{ errors['email'] }}</span>{% endif %}
+						<div class="signup-form">
+							<form action="{{ url_for('account.account') }}" method="POST" enctype="multipart/form-data">
+								<input type="text" name="name" placeholder="Name" value="{{ user.name }}"/>
+								{% if errors.get('name') %}
+									<span style="color:red;font-size:13px;display:block;margin-top:-10px;margin-bottom:10px;">{{ errors['name'] }}</span>
+								{% endif %}
 
-                <label>Họ và tên:</label>
-                <input type="text" name="name" value="{{ user.name }}">
-                {% if errors.get('name') %}<span class="error">{{ errors['name'] }}</span>{% endif %}
+								<input type="email" name="email" placeholder="Email Address" value="{{ user.email }}"/>
+								{% if errors.get('email') %}
+									<span style="color:red;font-size:13px;display:block;margin-top:-10px;margin-bottom:10px;">{{ errors['email'] }}</span>
+								{% endif %}
 
-                <label>Ảnh đại diện hiện tại:</label>
-                {% if user.avatar %}
-                    <img class="avatar-preview" src="{{ url_for('uploaded_file', filename=user.avatar) }}">
-                {% else %}
-                    <p style="font-size:13px;color:#777;">Chưa có ảnh đại diện</p>
-                {% endif %}
+								<input type="password" name="password" placeholder="Mật khẩu mới (bỏ trống nếu không đổi)"/>
 
-                <label>Đổi ảnh đại diện (bỏ trống nếu không đổi):</label>
-                <input type="file" name="avatar">
+								<label style="display:block; margin-top:10px;">Ảnh đại diện hiện tại:</label>
+								{% if user.avatar %}
+									<img src="{{ url_for('uploaded_file', filename=user.avatar) }}" style="width:90px; height:90px; object-fit:cover; border-radius:50%; margin:8px 0; display:block;">
+								{% else %}
+									<p style="font-size:13px; color:#777;">Chưa có ảnh đại diện</p>
+								{% endif %}
 
-                <button type="submit">Cập nhật</button>
-            </form>
-        </main>
-    </div>
-</body>
-</html>
+								<label style="display:block; margin-top:10px;">Đổi ảnh đại diện (bỏ trống nếu không đổi):</label>
+								<input type="file" name="avatar"/>
+								{% if errors.get('avatar') %}
+									<span style="color:red;font-size:13px;display:block;margin-top:5px;margin-bottom:10px;">{{ errors['avatar'] }}</span>
+								{% endif %}
+
+								<button type="submit" class="btn btn-default">Update</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

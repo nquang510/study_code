@@ -1,19 +1,13 @@
+import hashlib
 from flask import Blueprint, render_template, request, session, redirect, url_for
-import re
-from werkzeug.security import check_password_hash
 from db import get_connection
 
 login_bp = Blueprint('login', __name__)
-
-def is_valid_email(email):
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+$'
-    return re.match(pattern, email) is not None
 
 @login_bp.route('/login', methods=['GET', 'POST'])
 def login():
     errors = {}
     email = ""
-    password = ""
 
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
@@ -21,29 +15,31 @@ def login():
 
         if not email:
             errors['email'] = 'Vui lòng nhập email'
-        elif not is_valid_email(email):
-            errors['email'] = 'Vui lòng nhập đúng định dạng Email'
         if not password:
             errors['password'] = 'Vui lòng nhập mật khẩu'
 
         if not errors:
+            hashed_password = hashlib.md5(password.encode('utf-8')).hexdigest()
+
             conn = get_connection()
             try:
                 with conn.cursor() as cursor:
-                    cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+                    cursor.execute(
+                        "SELECT * FROM users WHERE email=%s AND password=%s",
+                        (email, hashed_password)
+                    )
                     user = cursor.fetchone()
             finally:
                 conn.close()
 
             if not user:
-                errors['login'] = 'Không tìm thấy tài khoản. Vui lòng đăng ký trước.'
-            elif not check_password_hash(user['password'], password):
                 errors['login'] = 'Email hoặc mật khẩu không đúng.'
             else:
-                # Đăng nhập thành công -> lưu thông tin vào session
+                # Tạo session để đánh dấu đã đăng nhập + lưu id user
+                session['is_login'] = True
                 session['user_id'] = user['id']
-                session['email'] = user['email']
                 session['name'] = user['name']
-                return redirect(url_for('home.home'))
+                session['email'] = user['email']
+                return redirect(url_for('index'))
 
-    return render_template('login.html', errors=errors, email=email, password=password)
+    return render_template('login.html', errors=errors, email=email)

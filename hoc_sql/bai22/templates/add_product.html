@@ -1,47 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Thêm sản phẩm</title>
-    <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f7; margin: 0; }
-        .layout { max-width: 500px; margin: 40px auto; padding: 0 20px; }
-        .content { background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 28px 32px; }
-        label { display: block; font-weight: 600; color: #333; margin-top: 16px; margin-bottom: 6px; }
-        input[type="text"], input[type="number"] { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-        input[type="file"] { width: 100%; padding: 8px 0; }
-        .error { color: #e74c3c; font-size: 13px; margin-top: 4px; display: inline-block; }
-        button[type="submit"] {
-            margin-top: 24px; padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer;
-        }
-        .back-link { display: inline-block; margin-top: 16px; color: #764ba2; font-size: 14px; text-decoration: none; }
-    </style>
-</head>
-<body>
-    {% include 'header.html' %}
-    <div class="layout">
-        <div class="content">
-            <h2>Thêm sản phẩm</h2>
-            <form method="POST" action="{{ url_for('product.add_product') }}" enctype="multipart/form-data">
-                <label>Tên sản phẩm:</label>
-                <input type="text" name="title" value="{{ title }}">
-                {% if errors.get('title') %}<span class="error">{{ errors['title'] }}</span>{% endif %}
+{% extends 'layout/main.html' %}
 
-                <label>Giá:</label>
-                <input type="number" step="0.01" name="price" value="{{ price }}">
-                {% if errors.get('price') %}<span class="error">{{ errors['price'] }}</span>{% endif %}
+{% block title %}Add Product{% endblock %}
 
-                <label>Ảnh sản phẩm:</label>
-                <input type="file" name="image">
-                {% if errors.get('image') %}<span class="error">{{ errors['image'] }}</span>{% endif %}
+{% block content %}
+	<section id="form">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-4">
+					<div class="signup-form">
+						<h2>Thêm sản phẩm</h2>
+						<form action="{{ url_for('product.add_product') }}" method="POST" enctype="multipart/form-data">
+							<input type="text" name="title" placeholder="Tên sản phẩm" value="{{ title }}"/>
+							{% if errors.get('title') %}
+								<span style="color:red;font-size:13px;display:block;margin-top:-10px;margin-bottom:10px;">{{ errors['title'] }}</span>
+							{% endif %}
 
-                <button type="submit">Đăng bán</button>
-            </form>
-            <a class="back-link" href="{{ url_for('product.my_product') }}">← Quay lại</a>
-        </div>
-    </div>
-</body>
-</html>
+							<input type="number" step="0.01" name="price" placeholder="Giá" value="{{ price }}"/>
+							{% if errors.get('price') %}
+								<span style="color:red;font-size:13px;display:block;margin-top:-10px;margin-bottom:10px;">{{ errors['price'] }}</span>
+							{% endif %}
+
+							<input type="file" name="image" style="margin-top:10px;margin-bottom:5px;"/>
+							{% if errors.get('image') %}
+								<span style="color:red;font-size:13px;display:block;margin-bottom:10px;">{{ errors['image'] }}</span>
+							{% endif %}
+
+							<button type="submit" class="btn btn-default">Đăng bán</button>
+						</form>
+						<a href="{{ url_for('product.my_product') }}" style="display:block; margin-top:15px;">← Quay lại</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

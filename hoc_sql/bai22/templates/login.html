@@ -1,131 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+{% extends 'layout/main.html' %}
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 20px;
-        }
+{% block title %}Login{% endblock %}
 
-        h1 {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
+{% block content %}
+    <section id="form"><!--form-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-1">
+					<div class="login-form"><!--login form-->
+						<h2>Login to your account</h2>
+						<form action="{{ url_for('login.login') }}" method="POST">
+							<input type="text" name="email" placeholder="Email Address" value="{{ email }}"/>
+							{% if errors.get('email') %}
+								<span style="color:red;font-size:13px;display:block;margin-top:-10px;margin-bottom:10px;">{{ errors['email'] }}</span>
+							{% endif %}
 
-        form {
-            background: #ffffff;
-            padding: 32px 28px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-        }
+							<input type="password" name="password" placeholder="Password"/>
+							{% if errors.get('password') %}
+								<span style="color:red;font-size:13px;display:block;margin-top:-10px;margin-bottom:10px;">{{ errors['password'] }}</span>
+							{% endif %}
 
-        label {
-            display: block;
-            font-weight: 600;
-            color: #333;
-            margin-top: 16px;
-            margin-bottom: 6px;
-        }
+							{% if errors.get('login') %}
+								<span style="color:red;font-size:13px;display:block;margin-bottom:10px;"><strong>Lỗi:</strong> {{ errors['login'] }}</span>
+							{% endif %}
 
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.15);
-        }
-
-        .error {
-            color: #e74c3c;
-            font-size: 13px;
-            margin-top: 4px;
-            display: inline-block;
-        }
-
-        .error-box {
-            background: #fdecea;
-            border: 1px solid #f5c6c3;
-            border-radius: 6px;
-            padding: 10px 12px;
-            margin-top: 16px;
-        }
-
-        .error-box .error {
-            margin-top: 0;
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            margin-top: 24px;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        button[type="submit"]:hover {
-            opacity: 0.9;
-        }
-
-        br {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div style="width: 100%; max-width: 400px;">
-        <h1>Đăng nhập</h1>
-        <form method="POST" action="/login">
-            <label>Email:</label>
-            <input type="text" name="email" value="{{email}}" required>
-            {%if errors.get('email') %}
-                <span class="error">{{errors['email']}}</span>
-            {%endif%}
-
-            <label>Mật khẩu:</label>
-            <input type="password" name="password" value="{{password}}" required>
-            {%if errors.get('password') %}
-                <span class="error">{{ errors['password']}}</span>
-            {%endif%}
-
-            {% if errors.get('login') %}
-                <div class="error-box">
-                    <span class="error"><strong>Lỗi:</strong> {{ errors['login'] }}</span>
-                </div>
-            {% endif %}
-
-            <button type="submit">Đăng nhập</button>
-        </form>
-    </div>
-</body>
-</html>
+							<button type="submit" class="btn btn-default">Login</button>
+						</form>
+					</div><!--/login form-->
+				</div>
+			</div>
+		</div>
+	</section><!--/form-->
+{% endblock %}
