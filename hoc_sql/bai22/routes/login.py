@@ -40,6 +40,6 @@ def login():
                 session['user_id'] = user['id']
                 session['name'] = user['name']
                 session['email'] = user['email']
-                return redirect(url_for('index'))
+                return redirect(url_for('index.index'))
 
     return render_template('login.html', errors=errors, email=email)
