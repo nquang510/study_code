@@ -214,44 +214,25 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
+					{% if products and products|length > 0 %}
+						{% for p in products %}
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products" id ="product1">
-										<div class="productinfo text-center">
-											<img class ="img" src="static/images/home/product1.jpg" alt="" />
-											<h2 class = "price">$56</h2>
-											<p class = "name">Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart" ><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<h2 class="price">$56</h2>
-												<p class="name">Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-										</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products" id="product2">
+								<div class="single-products" data-id="{{ p.id }}">
 									<div class="productinfo text-center">
-										<img class ="img" src="static/images/home/product2.jpg" alt="" />
-										<h2 class="price">$56</h2>
-										<p class="name">Easy Polo Black Edition</p>
+										{% if p.image %}
+										<img class="img" src="{{ url_for('uploaded_file', filename=p.image) }}" alt="" />
+										{% else %}
+										<img class="img" src="https://via.placeholder.com/300" alt="" />
+										{% endif %}
+										<h2 class="price">{{ "{:,.0f}".format(p.price) }} đ</h2>
+										<p class="name">{{ p.title }}</p>
 										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
-											<h2 class="price">$56</h2>
-											<p class="name">Easy Polo Black Edition</p>
+											<h2 class="price">{{ "{:,.0f}".format(p.price) }} đ</h2>
+											<p class="name">{{ p.title }}</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 									</div>
@@ -264,110 +245,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products" id="product3">
-									<div class="productinfo text-center">
-										<img class ="img" src="static/images/home/product3.jpg" alt="" />
-										<h2 class="price">$56</h2>
-										<p class="name">Easy Polo Black Edition</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<h2 class="price">$56</h2>
-											<p class="name">Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-									</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products" id="product4">
-									<div class="productinfo text-center">
-										<img class="img" src="static/images/home/product4.jpg" alt="" />
-										<h2 class="price">$56</h2>
-										<p class="name">Easy Polo Black Edition</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<h2 class="price">$56</h2>
-											<p class="name">Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-									</div>
-									<img src="static/images/home/new.png" class="new" alt="" />
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products" id="product5">
-									<div class="productinfo text-center">
-										<img class="img" src="static/images/home/product5.jpg" alt="" />
-										<h2 class="price">$56</h2>
-										<p class="name">Easy Polo Black Edition</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<h2 class="price">$56</h2>
-											<p class="name">Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-									</div>
-									<img src="static/images/home/sale.png" class="new" alt="" />
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products" id="product6">
-									<div class="productinfo text-center">
-										<img class="img" src="static/images/home/product6.jpg" alt="" />
-										<h2 class="price">$56</h2>
-										<p class="name">Easy Polo Black Edition</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<h2 class="price">$56</h2>
-											<p class="name">Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-									</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						
-					</div><!--features_items-->
+						{% endfor %}
+					{% else %}
+						<p style="text-align:center; color:#888; padding:30px 0;">Chưa có sản phẩm nào.</p>
+					{% endif %}
+					
+				</div><!--features_items-->
 					
 					<div class="category-tab"><!--category-tab-->
 						<div class="col-sm-12">
@@ -758,4 +641,40 @@
 			</div>
 		</div>
 	</section>
+
+	<script>
+	document.addEventListener('click', async function (e) {
+		const btn = e.target.closest('.add-to-cart');
+		if (!btn) return;
+		e.preventDefault(); // Ngăn trang reload nếu có
+
+		const wrapper = btn.closest('.single-products');
+		const id = wrapper.dataset.id;
+
+		try {
+			// Gửi AJAX (fetch) (giống form)
+			const response = await fetch("{{ url_for('cart.add_to_cart') }}", { // k có chi hết, k có html
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json', // Gửi dạng JSON
+				},
+				body: JSON.stringify({ id: id })
+			});
+
+			// Nhận phản hồi JSON từ Flask
+			const data = await response.json();
+
+			if (data.success) {
+				const badge = document.getElementById('cart-count');
+				if (badge) badge.textContent = data.cart_count;
+				alert(data.message);
+			} else {
+				alert(data.message || 'Có lỗi xảy ra, vui lòng thử lại');
+			}
+		} catch (err) {
+			console.error(err);
+			alert('Không thể kết nối máy chủ');
+		}
+	});
+	</script>
 {% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'layout/main.html' %}
+
+{% block title %}Cart | E-Shopper{% endblock %}
+
+{% block content %}
+	<section id="cart_items">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="{{ url_for('index.index') }}">Home</a></li>
+				  <li class="active">Shopping Cart</li>
+				</ol>
+			</div>
+
+			{% if cart and cart|length > 0 %}
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description"></td>
+							<td class="price">Price</td>
+							<td class="quantity">Quantity</td>
+							<td class="total">Total</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in cart %}
+						<tr>
+							<td class="cart_product">
+								{% if item.image %}
+									<img src="{{ url_for('uploaded_file', filename=item.image) }}" alt="" style="width:80px;height:80px;object-fit:cover;">
+								{% else %}
+									<img src="https://via.placeholder.com/80" alt="">
+								{% endif %}
+							</td>
+							<td class="cart_description">
+								<h4>{{ item.title }}</h4>
+							</td>
+							<td class="cart_price">
+								<p>{{ "{:,.0f}".format(item.price) }} đ</p>
+							</td>
+							<td class="cart_quantity">
+								<div class="cart_quantity_button">
+									<input class="cart_quantity_input" type="text" value="{{ item.qty }}" readonly autocomplete="off" size="2">
+								</div>
+							</td>
+							<td class="cart_total">
+								<p class="cart_total_price">{{ "{:,.0f}".format(item.price * item.qty) }} đ</p>
+							</td>
+							<td class="cart_delete">
+								<a class="cart_quantity_delete" href="{{ url_for('cart.remove_from_cart', product_id=item.id) }}">
+									<i class="fa fa-times"></i>
+								</a>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="row" style="margin-top:20px;">
+				<div class="col-sm-6 col-sm-offset-6">
+					<div class="total_area">
+						<ul>
+							<li>Cart Sub Total <span class="cart_sub_total">{{ "{:,.0f}".format(total) }} đ</span></li>
+							<li>Total <span>{{ "{:,.0f}".format(total) }} đ</span></li>
+						</ul>
+						<a class="btn btn-default check_out" href="#">Check Out</a>
+					</div>
+				</div>
+			</div>
+			{% else %}
+				<p style="text-align:center; color:#888; padding:40px 0;">Giỏ hàng của bạn đang trống.</p>
+			{% endif %}
+		</div>
+	</section>
+{% endblock %}
