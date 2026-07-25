@@ -52,7 +52,7 @@
 								<p class="cart_total_price">{{ "{:,.0f}".format(item.price * item.qty) }} $</p>
 							</td>
 							<td class="cart_delete">
-								<a class="cart_quantity_delete" href="{{ url_for('cart.remove_from_cart', product_id=item.id) }}">
+								<a class="cart_quantity_delete">
 									<i class="fa fa-times"></i>
 								</a>
 							</td>
@@ -145,12 +145,45 @@
 
 	<script>
 	document.addEventListener('click', async function (e) {
-		const btn = e.target.closest('.cart_quantity_up, .cart_quantity_down');
+		const btn = e.target.closest('.cart_quantity_up, .cart_quantity_down, .cart_quantity_delete');
 		if (!btn) return;
 		e.preventDefault();
 
 		const tr = btn.closest('tr');
 		const id = tr.dataset.id;
+
+		if (btn.classList.contains('cart_quantity_delete')) {
+			if (!confirm('Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng?')) return;
+
+			try {
+				const response = await fetch("{{ url_for('cart.remove_from_cart') }}", {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ id: id })
+				});
+				const data = await response.json();
+
+				if (!data.success) {
+					alert(data.message || 'Có lỗi xảy ra');
+					return;
+				}
+				tr.remove();
+
+				document.querySelector('.cart_sub_total').textContent = data.cart_total.toLocaleString('en-US') + ' $';
+				const grandTotal = document.getElementById('cart_grand_total');
+				if (grandTotal) grandTotal.textContent = data.cart_total.toLocaleString('en-US') + ' $';
+
+				const badge = document.getElementById('cart-count');
+				if (badge) badge.textContent = data.cart_count;
+
+
+			} catch (err) {
+				console.error(err);
+				alert('Không thể kết nối máy chủ');
+			}
+			return;
+		}
+
 		const input = tr.querySelector('.cart_quantity_input');
 		const currentQty = parseInt(input.value, 10);
 		const isIncrease = btn.classList.contains('cart_quantity_up');

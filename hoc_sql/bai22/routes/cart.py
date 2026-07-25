@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, session, jsonify
 from db import get_connection
 
 cart_bp = Blueprint('cart', __name__)
@@ -10,12 +10,12 @@ def add_to_cart():
     product_id = data.get('id')
 
     if not product_id:
-        return jsonify({'success': False, 'message': 'Thiếu id sản phẩm'}),
+        return jsonify({'success': False, 'message': 'Thiếu id sản phẩm'})
 
     try:
         product_id = int(product_id)
     except (TypeError, ValueError):
-        return jsonify({'success': False, 'message': 'id sản phẩm không hợp lệ'}),
+        return jsonify({'success': False, 'message': 'id sản phẩm không hợp lệ'})
 
     # Lấy thông tin sản phẩm từ DB theo id
     conn = get_connection()
@@ -30,11 +30,10 @@ def add_to_cart():
         conn.close()
 
     if not product:
-        return jsonify({'success': False, 'message': 'Sản phẩm không tồn tại'}),
+        return jsonify({'success': False, 'message': 'Sản phẩm không tồn tại'})
 
     cart = session.get('cart', [])
 
-    # Nếu sản phẩm đã có trong giỏ thì tăng số lượng, chưa có thì thêm mới
     found = False
     for item in cart:
         if item['id'] == product['id']:
@@ -52,7 +51,7 @@ def add_to_cart():
         })
 
     session['cart'] = cart
-    session.modified = True  # bắt buộc vì đang sửa list lồng trong session
+    session.modified = True 
 
     total_qty = sum(item['qty'] for item in cart)
 
@@ -71,10 +70,10 @@ def update_cart_qty():
         product_id = int(data.get('id'))
         new_qty = int(data.get('qty'))
     except (TypeError, ValueError):
-        return jsonify({'success': False, 'message': 'Dữ liệu không hợp lệ'}),
+        return jsonify({'success': False, 'message': 'Dữ liệu không hợp lệ'})
 
     if new_qty <= 0:
-        return jsonify({'success': False, 'message': 'Số lượng phải lớn hơn 0. Dùng nút xoá nếu muốn bỏ sản phẩm.'}),
+        return jsonify({'success': False, 'message': 'Số lượng phải lớn hơn 0. Dùng nút xoá nếu muốn bỏ sản phẩm.'})
 
     cart = session.get('cart', [])
 
@@ -86,10 +85,10 @@ def update_cart_qty():
             break
 
     if not target_item:
-        return jsonify({'success': False, 'message': 'Sản phẩm không có trong giỏ hàng'}),
+        return jsonify({'success': False, 'message': 'Sản phẩm không có trong giỏ hàng'})
 
     session['cart'] = cart
-    session.modified = True 
+    session.modified = True
 
     item_total = target_item['price'] * target_item['qty']
     cart_total = sum(i['price'] * i['qty'] for i in cart)
@@ -111,10 +110,26 @@ def cart():
     return render_template('cart.html', cart=cart, total=total)
 
 
-@cart_bp.route('/remove-from-cart/<int:product_id>')
-def remove_from_cart(product_id):
+@cart_bp.route('/remove-from-cart', methods=['POST'])
+def remove_from_cart():
+    data = request.get_json(silent=True) or {}
+
+    try:
+        product_id = int(data.get('id'))
+    except (TypeError, ValueError):
+        return jsonify({'success': False, 'message': 'Dữ liệu không hợp lệ'})
     cart = session.get('cart', [])
-    cart = [item for item in cart if item['id'] != product_id]
-    session['cart'] = cart
+    new_cart = [item for item in cart if item['id'] != product_id]
+
+
+    session['cart'] = new_cart
     session.modified = True
-    return redirect(url_for('cart.cart'))
+
+    cart_total = sum(i['price'] * i['qty'] for i in new_cart)
+    cart_count = sum(i['qty'] for i in new_cart)
+
+    return jsonify({
+        'success': True,
+        'cart_total': cart_total,
+        'cart_count': cart_count
+    })
