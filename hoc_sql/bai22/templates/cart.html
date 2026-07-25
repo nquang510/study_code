@@ -155,7 +155,6 @@
 		const currentQty = parseInt(input.value, 10);
 		const isIncrease = btn.classList.contains('cart_quantity_up');
 
-		// Chặn giảm khi qty đang <= 1, không gọi AJAX
 		if (!isIncrease && currentQty <= 1) {
 			alert('Số lượng tối thiểu là 1. Nếu muốn bỏ sản phẩm này, vui lòng dùng nút xoá.');
 			return;
