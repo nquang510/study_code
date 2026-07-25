@@ -10,12 +10,12 @@ def add_to_cart():
     product_id = data.get('id')
 
     if not product_id:
-        return jsonify({'success': False, 'message': 'Thiếu id sản phẩm'}), 400
+        return jsonify({'success': False, 'message': 'Thiếu id sản phẩm'}),
 
     try:
         product_id = int(product_id)
     except (TypeError, ValueError):
-        return jsonify({'success': False, 'message': 'id sản phẩm không hợp lệ'}), 400
+        return jsonify({'success': False, 'message': 'id sản phẩm không hợp lệ'}),
 
     # Lấy thông tin sản phẩm từ DB theo id
     conn = get_connection()
@@ -34,6 +34,7 @@ def add_to_cart():
 
     cart = session.get('cart', [])
 
+    # Nếu sản phẩm đã có trong giỏ thì tăng số lượng, chưa có thì thêm mới
     found = False
     for item in cart:
         if item['id'] == product['id']:
@@ -59,6 +60,47 @@ def add_to_cart():
         'success': True,
         'message': 'Đã thêm vào giỏ hàng',
         'cart_count': total_qty
+    })
+
+
+@cart_bp.route('/update-cart-qty', methods=['POST'])
+def update_cart_qty():
+    data = request.get_json(silent=True) or {}
+
+    try:
+        product_id = int(data.get('id'))
+        new_qty = int(data.get('qty'))
+    except (TypeError, ValueError):
+        return jsonify({'success': False, 'message': 'Dữ liệu không hợp lệ'}),
+
+    if new_qty <= 0:
+        return jsonify({'success': False, 'message': 'Số lượng phải lớn hơn 0. Dùng nút xoá nếu muốn bỏ sản phẩm.'}),
+
+    cart = session.get('cart', [])
+
+    target_item = None
+    for item in cart:
+        if item['id'] == product_id:
+            item['qty'] = new_qty
+            target_item = item
+            break
+
+    if not target_item:
+        return jsonify({'success': False, 'message': 'Sản phẩm không có trong giỏ hàng'}),
+
+    session['cart'] = cart
+    session.modified = True 
+
+    item_total = target_item['price'] * target_item['qty']
+    cart_total = sum(i['price'] * i['qty'] for i in cart)
+    cart_count = sum(i['qty'] for i in cart)
+
+    return jsonify({
+        'success': True,
+        'qty': target_item['qty'],
+        'item_total': item_total,
+        'cart_total': cart_total,
+        'cart_count': cart_count
     })
 
 
