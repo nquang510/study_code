@@ -21,7 +21,6 @@ app.secret_key = '051005'
 
 @app.context_processor
 def inject_cart_count():
-    # Tự động có sẵn biến cart_count ở MỌI template (header.html dùng để hiển thị badge)
     cart = session.get('cart', [])
     cart_count = sum(item['qty'] for item in cart)
     return dict(cart_count=cart_count)

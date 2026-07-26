@@ -167,15 +167,17 @@
 					alert(data.message || 'Có lỗi xảy ra');
 					return;
 				}
+
 				tr.remove();
 
 				document.querySelector('.cart_sub_total').textContent = data.cart_total.toLocaleString('en-US') + ' $';
-				const grandTotal = document.getElementById('cart_grand_total');
-				if (grandTotal) grandTotal.textContent = data.cart_total.toLocaleString('en-US') + ' $';
+				document.getElementById('cart_grand_total').textContent = data.cart_total.toLocaleString('en-US') + ' $';
+				document.getElementById('cart-count').textContent = data.cart_count;
 
-				const badge = document.getElementById('cart-count');
-				if (badge) badge.textContent = data.cart_count;
-
+				const tbody = document.querySelector('.cart_info tbody');
+				if (tbody && tbody.children.length === 0) {
+					window.location.reload();
+				}
 
 			} catch (err) {
 				console.error(err);
@@ -183,7 +185,6 @@
 			}
 			return;
 		}
-
 		const input = tr.querySelector('.cart_quantity_input');
 		const currentQty = parseInt(input.value, 10);
 		const isIncrease = btn.classList.contains('cart_quantity_up');
@@ -212,11 +213,8 @@
 			tr.querySelector('.cart_total_price').textContent = data.item_total.toLocaleString('en-US') + ' $';
 
 			document.querySelector('.cart_sub_total').textContent = data.cart_total.toLocaleString('en-US') + ' $';
-			const grandTotal = document.getElementById('cart_grand_total');
-			if (grandTotal) grandTotal.textContent = data.cart_total.toLocaleString('en-US') + ' $';
-
-			const badge = document.getElementById('cart-count');
-			if (badge) badge.textContent = data.cart_count;
+			document.getElementById('cart_grand_total').textContent = data.cart_total.toLocaleString('en-US') + ' $';
+			document.getElementById('cart-count').textContent = data.cart_count;
 
 		} catch (err) {
 			console.error(err);
