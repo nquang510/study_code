@@ -1,0 +1,24 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <h2>Danh sách người dùng</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Tên người dùng</th>
+            <th>Email</th>
+            <th>Hành động</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <a href="{% url 'edit_user' user.id %}">Sửa</a>
+                <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">Xóa</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

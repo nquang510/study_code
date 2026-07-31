@@ -1,0 +1,15 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <h2>Thêm người dùng mới</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Tên người dùng:</label><br>
+        <input type="text" name="username" required><br>
+        
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br>
+        
+        <input type="submit" value="Thêm">
+    </form>
+{% endblock %}
