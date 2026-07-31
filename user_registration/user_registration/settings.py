@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mysql.connector.django',
     'user_registration',
     'users',
+    'shop',
 ]
 
 MIDDLEWARE = [

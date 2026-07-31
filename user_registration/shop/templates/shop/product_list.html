@@ -1,0 +1,26 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+    <h2>Danh sách sản phẩm</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Tên sản phẩm</th>
+            <th>Mô tả</th>
+            <th>Giá</th>
+            <th>Hành động</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price }}</td>
+            <td>
+                <a href="{% url 'edit_product' product.id %}">Sửa</a>
+                <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">Xóa</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
