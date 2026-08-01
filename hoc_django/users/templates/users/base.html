@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% load static %}
+        <title> Quản lý người dùng </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'users/css/users-style.css' %}">
+        {% block styles %}
+        {% endblock %}
+    </head>
+    <body>
+        <h1> Quản lý người dùng </h1>
+        <a href="{% url 'add_user' %}"> Thêm người dùng </a>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
