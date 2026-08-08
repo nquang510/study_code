@@ -1,8 +1,15 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings
 
-class User(models.Model):
-    username = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
+
+class Country(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.username
+        return self.name
+
+
+class CustomerUser(AbstractUser):
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    id_country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)   

@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import CustomerUser, Country
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email')
-    search_fields = ('username', 'email')
-    list_filter = ('email',)
+admin.site.register(CustomerUser)
+admin.site.register(Country)
