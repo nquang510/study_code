@@ -24,9 +24,26 @@
 <body>
     {% include 'layout/header.html' %}
 
-    {% block content %}
-    {% endblock %}
+    {% block banner %}{% endblock %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+                {% include 'layout/menu-left.html' %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </section>
 
     {% include 'layout/footer.html' %}
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+    <script src="{% static 'js/price-range.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

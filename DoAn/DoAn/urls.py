@@ -23,8 +23,21 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, 'index.html')
+
+def shop(request):
+    return render(request, 'shop.html')
+
+def product_details(request):
+    return render(request, 'product-details.html')
+
+def blog_detail(request):
+    return render(request, 'blog-detail.html')
+
 urlpatterns = [
     path('', index, name='index'),
+    path('shop/', shop, name='shop'),
+    path('product-details/', product_details, name='product_details'),
+    path('blog-detail/', blog_detail, name='blog_detail'),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
