@@ -116,20 +116,24 @@
                 >
               </li>
               <li>
-                <a href="#"
-                  ><i class="fa fa-lock"></i> Logout</a
-                >
-              </li>
-              <li>
-                <a href="#"
+                <a href="{% url 'register' %}"
                   ><i class="fa fa-user"></i> Register</a
                 >
               </li>
+              {% if user.is_authenticated %}
               <li>
-                <a href="#"
+                <a href="{% url 'logout' %}"
+                  ><i class="fa fa-sign-out"></i>Xin chào, {{ user.username }} | {{user.id}} | Logout</a
+                >
+              </li>
+              {% else %}
+              <li>
+                <a href="{% url 'login' %}"
                   ><i class="fa fa-lock"></i> Login</a
                 >
               </li>
+              {% endif %}
+              
             </ul>
           </div>
         </div>
