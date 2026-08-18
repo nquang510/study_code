@@ -44,40 +44,36 @@
       <div class="row">
         <div class="col-md-4 clearfix">
           <div class="logo pull-left">
-            <a href="{% url 'index' %}"
-              ><img
-                src="{% static 'images/home/logo.png' %}"
-                alt=""
-            /></a>
+            <a href="{% url 'index' %}"><img src="{% static 'images/home/logo.png' %}" alt="" /></a>
           </div>
           <div class="btn-group pull-right clearfix">
             <div class="btn-group">
-              <button
-                type="button"
-                class="btn btn-default dropdown-toggle usa"
-                data-toggle="dropdown"
-              >
+              <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
                 USA
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a href="">Canada</a></li>
-                <li><a href="">UK</a></li>
+                <li>
+                  <a href="">Canada</a>
+                </li>
+                <li>
+                  <a href="">UK</a>
+                </li>
               </ul>
             </div>
 
             <div class="btn-group">
-              <button
-                type="button"
-                class="btn btn-default dropdown-toggle usa"
-                data-toggle="dropdown"
-              >
+              <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
                 DOLLAR
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a href="">Canadian Dollar</a></li>
-                <li><a href="">Pound</a></li>
+                <li>
+                  <a href="">Canadian Dollar</a>
+                </li>
+                <li>
+                  <a href="">Pound</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -89,51 +85,36 @@
                 <a href=""><i class="fa fa-star"></i> Wishlist</a>
               </li>
               <li>
-                <a href="checkout.html"
-                  ><i class="fa fa-crosshairs"></i> Checkout</a
-                >
+                <a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a>
               </li>
               <li>
                 <a href="#">
                   <i class="fa fa-shopping-cart"></i> Cart
-                  <span
-                    id="cart-count"
-                    style="
+                  <span id="cart-count" style="
                       background: #fe980f;
                       color: white;
                       padding: 2px 6px;
                       border-radius: 50%;
                       font-size: 12px;
                       margin-left: 5px;
-                    "
-                    >{{ cart_count }}</span
-                  >
+                    ">{{ cart_count }}</span>
                 </a>
               </li>
               <li>
-                <a href="#"
-                  ><i class="fa fa-user"></i> Account</a
-                >
+                <a href="#"><i class="fa fa-user"></i> Account</a>
               </li>
               <li>
-                <a href="{% url 'register' %}"
-                  ><i class="fa fa-user"></i> Register</a
-                >
+                <a href="{% url 'register' %}"><i class="fa fa-user"></i> Register</a>
               </li>
-              {% if user.is_authenticated %}
-              <li>
-                <a href="{% url 'logout' %}"
-                  ><i class="fa fa-sign-out"></i>Xin chào, {{ user.username }} | {{user.id}} | Logout</a
-                >
-              </li>
+              {% if custom_user %}
+                <li>
+                  <a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Xin chào: {{ custom_user.username }} | {{ custom_user.id }} | Logout</a>
+                </li>
               {% else %}
-              <li>
-                <a href="{% url 'login' %}"
-                  ><i class="fa fa-lock"></i> Login</a
-                >
-              </li>
+                <li>
+                  <a href="{% url 'login' %}"><i class="fa fa-lock"></i> Login</a>
+                </li>
               {% endif %}
-              
             </ul>
           </div>
         </div>
@@ -145,12 +126,7 @@
       <div class="row">
         <div class="col-sm-9">
           <div class="navbar-header">
-            <button
-              type="button"
-              class="navbar-toggle"
-              data-toggle="collapse"
-              data-target=".navbar-collapse"
-            >
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -159,26 +135,46 @@
           </div>
           <div class="mainmenu pull-left">
             <ul class="nav navbar-nav collapse navbar-collapse">
-              <li><a href="{% url 'index' %}" class="active">Home</a></li>
+              <li>
+                <a href="{% url 'index' %}" class="active">Home</a>
+              </li>
               <li class="dropdown">
                 <a href="#">Shop<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
-                  <li><a href="shop.html">Products</a></li>
-                  <li><a href="product-details.html">Product Details</a></li>
-                  <li><a href="checkout.html">Checkout</a></li>
-                  <li><a href="#">Cart</a></li>
-                  <li><a href="login.html">Login</a></li>
+                  <li>
+                    <a href="shop.html">Products</a>
+                  </li>
+                  <li>
+                    <a href="product-details.html">Product Details</a>
+                  </li>
+                  <li>
+                    <a href="checkout.html">Checkout</a>
+                  </li>
+                  <li>
+                    <a href="#">Cart</a>
+                  </li>
+                  <li>
+                    <a href="login.html">Login</a>
+                  </li>
                 </ul>
               </li>
               <li class="dropdown">
                 <a href="#">Blog<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
-                  <li><a href="blog.html">Blog List</a></li>
-                  <li><a href="blog-single.html">Blog Single</a></li>
+                  <li>
+                    <a href="{% url 'blog_list' %}">Blog List</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'blog_detail' %}">Blog Single</a>
+                  </li>
                 </ul>
               </li>
-              <li><a href="404.html">404</a></li>
-              <li><a href="contact-us.html">Contact</a></li>
+              <li>
+                <a href="404.html">404</a>
+              </li>
+              <li>
+                <a href="contact-us.html">Contact</a>
+              </li>
             </ul>
           </div>
         </div>

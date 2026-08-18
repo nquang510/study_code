@@ -34,6 +34,8 @@ def product_details(request):
 
 def blog_detail(request):
     return render(request, 'blog-detail.html')
+def blog_list(request):
+    return render(request, 'blog.html')
 
 urlpatterns = [
     path('', index, name='index'),
@@ -42,6 +44,7 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('product-details/', product_details, name='product_details'),
     path('blog-detail/', blog_detail, name='blog_detail'),
+    path('blog/', blog_list, name='blog_list'),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('users/logout/', custom_logout, name='logout'),

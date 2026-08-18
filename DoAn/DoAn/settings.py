@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'mysql.connector.django',
     'DoAn',
     'blog',
-    'users',   
+    'users',
 ]
 
 
@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.custom_auth',
             ],
         },
     },
@@ -96,7 +97,7 @@ DATABASES = {
         'PORT': '3307',
         'OPTIONS': {
             'sql_mode': 'STRICT_TRANS_TABLES',
-        }   
+        }
     }
 }
 

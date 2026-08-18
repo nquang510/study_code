@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import UserLoginForm, UserRegisterForm
-from django.contrib.auth import authenticate, login, logout
+from .models import User   # model tùy chỉnh của bạn
 
 
 def register_view(request):
@@ -20,6 +20,7 @@ def register_view(request):
         form = UserRegisterForm()
     return render(request, "register.html", {"form": form})
 
+
 def login_view(request):
     if request.method == "POST":
         form = UserLoginForm(request.POST)
@@ -30,6 +31,7 @@ def login_view(request):
         form = UserLoginForm()
     return render(request, "login.html", {"form": form})
 
+
 def custom_logout(request):
-    logout(request)
-    return redirect('login')
+    request.session.flush()
+    return redirect("login")
