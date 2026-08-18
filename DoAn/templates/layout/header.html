@@ -159,14 +159,16 @@
                 </ul>
               </li>
               <li class="dropdown">
-                <a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                <a href="{% url 'blog_list' %}">Blog<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
                   <li>
                     <a href="{% url 'blog_list' %}">Blog List</a>
                   </li>
+                  {% if latest_blog_post %}
                   <li>
-                    <a href="{% url 'blog_detail' %}">Blog Single</a>
+                    <a href="{% url 'blog_detail' latest_blog_post.pk %}">Blog Single</a>
                   </li>
+                  {% endif %}
                 </ul>
               </li>
               <li>

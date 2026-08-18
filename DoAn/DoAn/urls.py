@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from django.shortcuts import render
 from users.views import register_view, login_view, custom_logout
+from blog.views import blog_list, blog_detail
 
 def index(request):
     return render(request, 'index.html')
@@ -32,23 +33,18 @@ def shop(request):
 def product_details(request):
     return render(request, 'product-details.html')
 
-def blog_detail(request):
-    return render(request, 'blog-detail.html')
-def blog_list(request):
-    return render(request, 'blog.html')
-
 urlpatterns = [
     path('', index, name='index'),
     path('shop/', shop, name='shop'),
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
     path('product-details/', product_details, name='product_details'),
-    path('blog-detail/', blog_detail, name='blog_detail'),
     path('blog/', blog_list, name='blog_list'),
+    path('blog/<int:pk>/', blog_detail, name='blog_detail'),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('users/logout/', custom_logout, name='logout'),
-    
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
