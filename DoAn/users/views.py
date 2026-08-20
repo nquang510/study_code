@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from .forms import UserLoginForm, UserRegisterForm
-from .models import User   # model tùy chỉnh của bạn
 
 
 def register_view(request):
@@ -22,16 +23,23 @@ def register_view(request):
 
 
 def login_view(request):
-    if request.method == "POST":
-        form = UserLoginForm(request.POST)
+    if request.method == 'POST':
+        form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
-            request.session["user_id"] = form.user.id
-            return redirect("index")
+            user = form.get_user()
+            login(request, user)
+
+            return redirect('index')
     else:
         form = UserLoginForm()
-    return render(request, "login.html", {"form": form})
+    return render(request, 'login.html', {'form': form})
 
 
 def custom_logout(request):
-    request.session.flush()
+    logout(request)
     return redirect("login")
+
+
+@login_required
+def index(request):
+    return render(request, 'index.html')

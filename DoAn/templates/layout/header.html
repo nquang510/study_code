@@ -106,9 +106,9 @@
               <li>
                 <a href="{% url 'register' %}"><i class="fa fa-user"></i> Register</a>
               </li>
-              {% if custom_user %}
+              {% if user.is_authenticated %}
                 <li>
-                  <a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Xin chào: {{ custom_user.username }} | {{ custom_user.id }} | Logout</a>
+                  <a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Xin chào: {{ user.username }} | {{ user.id }} | Logout</a>
                 </li>
               {% else %}
                 <li>

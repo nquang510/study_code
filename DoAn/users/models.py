@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import AbstractUser
 
 
 class Country(models.Model):
@@ -13,17 +13,19 @@ class Country(models.Model):
         return self.name
 
 
-class User(models.Model):
-    username = models.CharField(max_length=150, unique=True)
-    email = models.EmailField(blank=True, null=True)
-    password = models.CharField(max_length=128, blank=True)
+class User(AbstractUser):
+    """
+    User tuỳ biến kế thừa AbstractUser của Django.
 
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
+    AbstractUser đã cung cấp sẵn: username, password (đã hash),
+    email, first_name, last_name, is_staff, is_active, is_superuser,
+    last_login, date_joined, groups, user_permissions cùng toàn bộ
+    cơ chế xác thực/permission chuẩn của Django (set_password,
+    check_password, authenticate, login_required, admin site, ...).
+    Ở đây ta chỉ cần bổ sung các field riêng của dự án.
+    """
+
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
-
-    is_superuser = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
 
     id_country = models.ForeignKey(
         Country,
@@ -40,9 +42,3 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
-
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
