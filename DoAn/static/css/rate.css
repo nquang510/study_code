@@ -1,0 +1,28 @@
+.rate {
+    float: right;
+}
+
+.rate .vote {
+    display: inline-block;
+}
+
+.rate .ratings_stars {
+    color: #CCCCCC;
+    font-size: 13px;
+    float: left;
+    margin-right: 2px;
+}
+
+.rate .ratings_over,
+.rate .ratings_hover {
+    color: #FE980F;
+}
+
+.rate .rate-np {
+    font-size: 12px;
+    color: #FE980F;
+    font-weight: 700;
+    margin-left: 4px;
+    display: inline-block;
+    vertical-align: top;
+}

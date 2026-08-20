@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    {% block extra_css %}{% endblock %}
 
     <link rel="shortcut icon" href="{% static 'images/ico/favicon.ico' %}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'images/ico/apple-touch-icon-144-precomposed.png' %}">
@@ -45,5 +46,6 @@
     <script src="{% static 'js/price-range.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
+    
 </body>
 </html>
