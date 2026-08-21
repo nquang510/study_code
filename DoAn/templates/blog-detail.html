@@ -44,14 +44,14 @@
 					<div class="rating-area">
 						<ul class="ratings">
 							<li class="rate-this">Rate this item:</li>
-							<li>
-								<i class="fa fa-star color"></i>
-								<i class="fa fa-star color"></i>
-								<i class="fa fa-star color"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
+							<li class="rate-stars" data-blog-id="{{ blog.id }}" data-avg="{{ average_rating }}" data-user-rated="{% if check %}1{% else %}0{% endif %}">
+								<i class="fa fa-star{% if average_rating >= 1 %} color{% endif %}" data-value="1"></i>
+								<i class="fa fa-star{% if average_rating >= 2 %} color{% endif %}" data-value="2"></i>
+								<i class="fa fa-star{% if average_rating >= 3 %} color{% endif %}" data-value="3"></i>
+								<i class="fa fa-star{% if average_rating >= 4 %} color{% endif %}" data-value="4"></i>
+								<i class="fa fa-star{% if average_rating >= 5 %} color{% endif %}" data-value="5"></i>
 							</li>
-							<li class="color">(6 votes)</li>
+							<li class="color rate-count">({{ rate_count }} votes)</li>
 						</ul>
 						<ul class="tag">
 							<li>TAG:</li>
@@ -219,4 +219,8 @@
 					</div><!--/Repaly Box-->
 				</div>	
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/rate.js' %}"></script>
 {% endblock %}

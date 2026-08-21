@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from django.shortcuts import render
 from users.views import register_view, login_view, custom_logout
-from blog.views import blog_list, blog_detail
+from blog.views import blog_list, blog_detail, rate_blog
 
 def index(request):
     return render(request, 'index.html')
@@ -41,6 +41,7 @@ urlpatterns = [
     path('product-details/', product_details, name='product_details'),
     path('blog/', blog_list, name='blog_list'),
     path('blog/<int:pk>/', blog_detail, name='blog_detail'),
+    path('blog/<int:pk>/rate/', rate_blog, name='rate_blog'),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('users/logout/', custom_logout, name='logout'),

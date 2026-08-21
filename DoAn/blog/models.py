@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -25,3 +26,13 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Rate(models.Model):
+    id_blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="rates")
+    id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="rates")
+    rate = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+
+    class Meta:
+        unique_together = ("id_blog", "id_user")
+    def __str__(self):
+        return f"{self.id_user.username} - {self.id_blog.title} - {self.rate}"
