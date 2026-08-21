@@ -1,79 +1,44 @@
 $(document).ready(function () {
+    const csrftoken = $('[name=csrfmiddlewaretoken]').val();
 
-	function getCookie(name) {
-		var cookieValue = null;
-		if (document.cookie && document.cookie !== '') {
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i < cookies.length; i++) {
-				var cookie = cookies[i].trim();
-				if (cookie.substring(0, name.length + 1) === (name + '=')) {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	}
-	var csrftoken = getCookie('csrftoken');
+    // hover sao khi rê chuột
+    $('.fa-star').hover(function () {
+        const hoverValue = $(this).data('value');
+        $('.fa-star').each(function () {
+            $(this).toggleClass('color', $(this).data('value') <= hoverValue);
+        });
+    });
 
-	function paintStars($wrap, value) {
-		$wrap.find('.fa-star').each(function () {
-			var starValue = parseInt($(this).attr('data-value'), 10);
-			$(this).toggleClass('color', starValue <= value);
-		});
-	}
 
-	// Tô màu các sao khi rê chuột vào
-	$('.rate-stars').on('mouseenter', '.fa-star', function () {
-		var hoverValue = parseInt($(this).attr('data-value'), 10);
-		paintStars($(this).closest('.rate-stars'), hoverValue);
-	});
+    // click sao
+    $('.fa-star').click(function () {
 
-	// khi rê chuột ra khỏi các sao, tô màu lại theo điểm trung bình
-	$('.rate-stars').on('mouseleave', function () {
-		var avg = parseInt($(this).attr('data-avg'), 10) || 0;
-		paintStars($(this), avg);
-	});
+        const rate = $(this).data('value');
+        const $wrap = $(this).closest('.rate-stars');
+        const blogId = $wrap.data('blog-id');
 
-	// click vào sao để đánh giá
-	$('.rate-stars').on('click', '.fa-star', function () {
-		var $star = $(this);
-		var $wrap = $star.closest('.rate-stars');
+        $.ajax({
+            type: 'POST',
+            url: '/blog/' + blogId + '/rate/',
+            data: { rate: rate },
+            headers: { 'X-CSRFToken': csrftoken },
+            success: function (data) {
 
-		if ($wrap.attr('data-user-rated') === '1') {
-			alert('Bạn đã đánh giá bài viết này rồi.');
-			return;
-		}
+                if (data.success) {
+					//cập nhật rate-count
+                    $('.rate-count').text('(' + data.rate_count + ' votes)');
+					//cập nhật lại điểm trung bình
+                    $wrap.data('avg', data.average_rating);
 
-		var blogId = $wrap.attr('data-blog-id');
-		var rateValue = $star.attr('data-value');
+                    $('.fa-star').each(function () {
+                        $(this).toggleClass('color', $(this).data('value') <= Math.round(data.average_rating));
+                    });
+                }
 
-		$.ajax({
-			url: '/blog/' + blogId + '/rate/',
-			type: 'POST',
-			data: {
-				rate: rateValue
-			},
-			headers: {
-				'X-CSRFToken': csrftoken
-			},
-			success: function (res) {
-				if (res.success) {
-					$wrap.attr('data-avg', res.average_rating);
-					$wrap.attr('data-user-rated', '1');
-					paintStars($wrap, res.average_rating);
-					$wrap.closest('.ratings').find('.rate-count').text('(' + res.rate_count + ' votes)');
-				}
-				alert(res.message);
-			},
-			error: function (xhr) {
-				if (xhr.status === 403) {
-					alert('Phiên đăng nhập đã hết hạn, vui lòng tải lại trang.');
-				} else {
-					alert('Có lỗi xảy ra, vui lòng thử lại.');
-				}
-			}
-		});
-	});
+                alert(data.message);
+            }
+        });
+
+    });
 
 });

@@ -42,6 +42,7 @@
 					</div><!--/blog-post-area-->
 
 					<div class="rating-area">
+						{% csrf_token %}
 						<ul class="ratings">
 							<li class="rate-this">Rate this item:</li>
 							<li class="rate-stars" data-blog-id="{{ blog.id }}" data-avg="{{ average_rating }}" data-user-rated="{% if check %}1{% else %}0{% endif %}">
