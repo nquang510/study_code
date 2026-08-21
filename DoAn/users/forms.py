@@ -53,13 +53,6 @@ class UserRegisterForm(forms.ModelForm):
 
 
 class UserLoginForm(AuthenticationForm):
-    """
-    Kế thừa thẳng AuthenticationForm chuẩn của Django. Với AbstractUser,
-    việc xác thực (kiểm tra username/password) đã được xử lý đúng chuẩn
-    bởi authenticate()/ModelBackend trong AuthenticationForm.clean(),
-    nên không cần tự viết lại logic kiểm tra mật khẩu như trước.
-    """
-
     username = forms.CharField(
         label="Username",
         widget=forms.TextInput(attrs={"placeholder": "Username"}),
