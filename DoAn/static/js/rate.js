@@ -1,26 +1,29 @@
 $(document).ready(function () {
     const csrftoken = $('[name=csrfmiddlewaretoken]').val();
+    const $wrap = $('.rate');
+    const blogId = $wrap.data('blog-id');
 
     // hover sao khi rê chuột
-    $('.fa-star').hover(function () {
-        $(this).prevAll('.fa-star').addBack().addClass('color');
-    }, function () {
-        $(this).prevAll('.fa-star').addBack().removeClass('color');
-    });
-
+    $('.ratings_stars').hover(
+        function () {
+            $(this).prevAll('.ratings_stars').addBack().addClass('ratings_hover');
+        },
+        function () {
+            $(this).prevAll('.ratings_stars').addBack().removeClass('ratings_hover');
+        }
+    );
 
     // click sao
-    $('.fa-star').click(function () {
+    $('.ratings_stars').click(function () {
+        const rate = $(this).find('input').val();
 
-        const rate = $(this).data('value');
-        const $wrap = $(this).closest('.rate-stars');
-        const blogId = $wrap.data('blog-id');
-        if ($(this).hasClass('fa-star.color')) {
-            $('.fa-star').removeClass('color');
-            $(this).prevAll().addBack().addClass('color');
-        } else {
-            $(this).prevAll().addBack().addClass('color');
-        }
+        if ($(this).hasClass('ratings_over')) {
+		            $('.ratings_stars').removeClass('ratings_over');
+		            $(this).prevAll().andSelf().addClass('ratings_over');
+		        } else {
+		        	$(this).prevAll().andSelf().addClass('ratings_over');
+		        }
+
         $.ajax({
             type: 'POST',
             url: '/blog/' + blogId + '/rate/',
@@ -29,20 +32,16 @@ $(document).ready(function () {
             success: function (data) {
 
                 if (data.success) {
-					//cập nhật rate-count
+                    // cập nhật rate-count
                     $('.rate-count').text('(' + data.rate_count + ' votes)');
-					//cập nhật lại điểm trung bình
+                    // cập nhật lại điểm trung bình
                     $wrap.data('avg', data.average_rating);
 
-                    $('.fa-star').each(function () {
-                        $(this).toggleClass('color', $(this).data('value') <= Math.round(data.average_rating));
-                    });
+                    
                 }
 
                 alert(data.message);
             }
         });
-
     });
-
 });
