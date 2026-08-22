@@ -30,7 +30,7 @@ def blog_detail(request, pk):
         .order_by('-created_at', '-id')
         .first()
     )
-    
+
     prev_post = (
         Blog.objects.filter(
             Q(created_at__gt=blog.created_at)

@@ -1,4 +1,4 @@
-.rate .ratings_stars{
+.rating-area .fa-star {
     height:     15px;
     width:      16px;
     background: url(../images/200/start2.png) no-repeat;
@@ -6,18 +6,18 @@
     float: left !important;
     margin-right: 4px;
 }
-.rate .ratings_over {
+.rating-area .fa-star.color {
     background: url(../images/200/start-active2.png) no-repeat;
      background-size: 16px;
 }
-.rate .ratings_hover {
+.rating-area .fa-star:hover {
     background: url(../images/200/start-hover2.png) no-repeat;
     background-size: 16px;
 }
-.rate .vote{
+.rating-area .vote{
     display: inline-block;
 }
-.rate .rate-np {
+.rating-area .rate-np {
     font-size: 12px;
     color: #c89805;
     display: inline-block;

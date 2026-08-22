@@ -3,10 +3,9 @@ $(document).ready(function () {
 
     // hover sao khi rê chuột
     $('.fa-star').hover(function () {
-        const hoverValue = $(this).data('value');
-        $('.fa-star').each(function () {
-            $(this).toggleClass('color', $(this).data('value') <= hoverValue);
-        });
+        $(this).prevAll('.fa-star').addBack().addClass('color');
+    }, function () {
+        $(this).prevAll('.fa-star').addBack().removeClass('color');
     });
 
 
@@ -16,7 +15,12 @@ $(document).ready(function () {
         const rate = $(this).data('value');
         const $wrap = $(this).closest('.rate-stars');
         const blogId = $wrap.data('blog-id');
-
+        if ($(this).hasClass('fa-star.color')) {
+            $('.fa-star').removeClass('color');
+            $(this).prevAll().addBack().addClass('color');
+        } else {
+            $(this).prevAll().addBack().addClass('color');
+        }
         $.ajax({
             type: 'POST',
             url: '/blog/' + blogId + '/rate/',
