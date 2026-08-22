@@ -1,6 +1,9 @@
 {% extends 'layout/base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rate.css' %}">
+{% endblock %}
 
 {% block title %}Blog Single | E-Shopper{% endblock %}
 
@@ -45,11 +48,10 @@
 						{% csrf_token %}
 						<div class="rate" data-blog-id="{{ blog.id }}" data-avg="{{ average_rating }}" data-user-rated="{% if check %}1{% else %}0{% endif %}">
 							<div class="vote">
-								<div class="star_1 ratings_stars{% if average_rating >= 1 %} ratings_over{% endif %}"><input value="1" type="hidden"></div>
-								<div class="star_2 ratings_stars{% if average_rating >= 2 %} ratings_over{% endif %}"><input value="2" type="hidden"></div>
-								<div class="star_3 ratings_stars{% if average_rating >= 3 %} ratings_over{% endif %}"><input value="3" type="hidden"></div>
-								<div class="star_4 ratings_stars{% if average_rating >= 4 %} ratings_over{% endif %}"><input value="4" type="hidden"></div>
-								<div class="star_5 ratings_stars{% if average_rating >= 5 %} ratings_over{% endif %}"><input value="5" type="hidden"></div>
+								{% for star in stars %}
+									<div class="ratings_stars{% if average_rating >= star %} ratings_over{% endif %}"><input value="{{ star }}" type="hidden">
+									</div>
+								{% endfor %}
 								<span class="rate-np">Avg: {{ average_rating }}</span>
 								<span class="rate-np rate-count">({{ rate_count }} votes)</span>
 							</div>
@@ -205,13 +207,56 @@
 						</div>
 					</div><!--/Repaly Box-->
 				</div>
-
-{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/rate.css' %}">
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/rate.js' %}"></script>
+<script>
+	$(document).ready(function () {
+    const csrftoken = $('[name=csrfmiddlewaretoken]').val();
+    const $wrap = $('.rate');
+    const blogId = $wrap.data('blog-id');
+
+    // hover sao khi rê chuột
+    $('.ratings_stars').hover(
+        function () {
+            $(this).prevAll('.ratings_stars').addBack().addClass('ratings_hover');
+        },
+        function () {
+            $(this).prevAll('.ratings_stars').addBack().removeClass('ratings_hover');
+        }
+    );
+
+    // click sao
+    $('.ratings_stars').click(function () {
+        const rate = $(this).find('input').val();
+
+        if ($(this).hasClass('ratings_over')) {
+		            $('.ratings_stars').removeClass('ratings_over');
+		            $(this).prevAll().andSelf().addClass('ratings_over');
+		        } else {
+		        	$(this).prevAll().andSelf().addClass('ratings_over');
+		        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/blog/' + blogId + '/rate/',
+            data: { rate: rate },
+            headers: { 'X-CSRFToken': csrftoken },
+            success: function (data) {
+
+                if (data.success) {
+                    // cập nhật rate-count
+                    $('.rate-count').text('(' + data.rate_count + ' votes)');
+                    // cập nhật lại điểm trung bình
+                    $wrap.data('avg', data.average_rating);
+
+                    
+                }
+
+                alert(data.message);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

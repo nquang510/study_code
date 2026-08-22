@@ -49,6 +49,7 @@ def blog_detail(request, pk):
         'average_rating': average_rating,
         'rate_count': rate_count,
         'check': check,
+        'stars': range(1, 6), 
     })
 
 
