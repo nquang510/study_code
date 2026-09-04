@@ -99,11 +99,7 @@
 							{% for cmt in comments %}
 							<li class="media" id="comment-{{ cmt.id }}">
 								<a class="pull-left" href="#">
-									{% if cmt.id_user.avatar %}
 									<img class="media-object" src="{{ cmt.id_user.avatar.url }}" alt="{{ cmt.id_user.username }}">
-									{% else %}
-									<img class="media-object" src="{% static 'images/blog/man-two.jpg' %}" alt="{{ cmt.id_user.username }}">
-									{% endif %}
 								</a>
 								<div class="media-body">
 									<ul class="sinlge-post-meta">
@@ -119,11 +115,7 @@
 							{% for reply in cmt.replies.all %}
 							<li class="media second-media" id="comment-{{ reply.id }}">
 								<a class="pull-left" href="#">
-									{% if reply.id_user.avatar %}
 									<img class="media-object" src="{{ reply.id_user.avatar.url }}" alt="{{ reply.id_user.username }}">
-									{% else %}
-									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="{{ reply.id_user.username }}">
-									{% endif %}
 								</a>
 								<div class="media-body">
 									<ul class="sinlge-post-meta">
@@ -149,7 +141,7 @@
 					<div class="replay-box">
 						<div class="row">
 							<div class="col-sm-12">
-								<h2>Leave a replay</h2>
+								
 
 								<form id="comment-form" method="post" action="{% url 'comment_blog' blog.id %}" data-logged="{% if user.is_authenticated %}1{% else %}0{% endif %}">
 									{% csrf_token %}
@@ -221,11 +213,9 @@
             }
         });
     });
-
-    /* ================= COMMENT ================= */
+	//Commnent
     const $form = $('#comment-form');
 
-    // bam nut Replay -> gan parent_id vao form
     $('.btn-reply').click(function (e) {
         e.preventDefault();
         $('#parent-id').val($(this).data('parent-id'));
@@ -235,14 +225,12 @@
         $('#comment-content').focus();
     });
 
-    // huy tra loi -> quay ve comment cha
     $('#cancel-reply').click(function (e) {
         e.preventDefault();
         $('#parent-id').val('');
         $('#replying-to').hide();
     });
 
-    // check login + noi dung rong ngay tai cho (server van check lai)
     $form.submit(function (e) {
         if ($form.data('logged') != 1) {
             e.preventDefault();

@@ -17,7 +17,7 @@ class BlogAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("id", "id_blog", "id_user", "parent", "created_at")
+    list_display = ("id", "id_blog", "id_user","content", "parent", "created_at")
     list_filter = ("id_blog", "created_at")
     search_fields = ("content", "id_user__username")
     readonly_fields = ("created_at",)
