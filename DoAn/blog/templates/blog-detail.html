@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/rate.css' %}">
+<link rel="stylesheet" href="{% static 'css/comment.css' %}">
 {% endblock %}
 
 {% block title %}Blog Single | E-Shopper{% endblock %}
@@ -87,107 +88,62 @@
 						</div>
 					</div>
 					<div class="response-area">
-						<h2>3 RESPONSES</h2>
-						<ul class="media-list">
-							<li class="media">
+						{% if messages %}
+						{% for message in messages %}
+						<div class="alert alert-info">{{ message }}</div>
+						{% endfor %}
+						{% endif %}
 
+						<h2>{{ comment_count }} RESPONSES</h2>
+						<ul class="media-list">
+							{% for cmt in comments %}
+							<li class="media" id="comment-{{ cmt.id }}">
 								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-two.jpg' %}" alt="">
+									{% if cmt.id_user.avatar %}
+									<img class="media-object" src="{{ cmt.id_user.avatar.url }}" alt="{{ cmt.id_user.username }}">
+									{% else %}
+									<img class="media-object" src="{% static 'images/blog/man-two.jpg' %}" alt="{{ cmt.id_user.username }}">
+									{% endif %}
 								</a>
 								<div class="media-body">
 									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+										<li><i class="fa fa-user"></i>{{ cmt.id_user.username }}</li>
+										<li><i class="fa fa-clock-o"></i> {{ cmt.created_at|date:"H:i" }}</li>
+										<li><i class="fa fa-calendar"></i> {{ cmt.created_at|date:"d M, Y" }}</li>
 									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
+									<p>{{ cmt.content|linebreaksbr }}</p>
+									<a class="btn btn-primary btn-reply" href="#" data-parent-id="{{ cmt.id }}" data-parent-name="{{ cmt.id_user.username }}"><i class="fa fa-reply"></i>Replay</a>
 								</div>
 							</li>
-							<li class="media second-media">
+
+							{% for reply in cmt.replies.all %}
+							<li class="media second-media" id="comment-{{ reply.id }}">
 								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="">
+									{% if reply.id_user.avatar %}
+									<img class="media-object" src="{{ reply.id_user.avatar.url }}" alt="{{ reply.id_user.username }}">
+									{% else %}
+									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="{{ reply.id_user.username }}">
+									{% endif %}
 								</a>
 								<div class="media-body">
 									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+										<li><i class="fa fa-user"></i>{{ reply.id_user.username }}</li>
+										<li><i class="fa fa-clock-o"></i> {{ reply.created_at|date:"H:i" }}</li>
+										<li><i class="fa fa-calendar"></i> {{ reply.created_at|date:"d M, Y" }}</li>
 									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
+									<p>{{ reply.content|linebreaksbr }}</p>
+									<a class="btn btn-primary btn-reply" href="#" data-parent-id="{{ cmt.id }}" data-parent-name="{{ reply.id_user.username }}"><i class="fa fa-reply"></i>Replay</a>
 								</div>
 							</li>
-							<li class="media second-media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-								</div>
-							</li>
-							<li class="media second-media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-								</div>
-							</li>
+							{% endfor %}
+
+							{% empty %}
 							<li class="media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-four.jpg' %}" alt="">
-								</a>
 								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
+									<p>Chưa có bình luận nào. Hãy là người bình luận đầu tiên!</p>
 								</div>
 							</li>
-							<li class="media second-media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-								</div>
-							</li>
-							<li class="media second-media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{% static 'images/blog/man-three.jpg' %}" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-								</div>
-							</li>
+							{% endfor %}
 						</ul>
 					</div><!--/Response-area-->
 					<div class="replay-box">
@@ -195,14 +151,22 @@
 							<div class="col-sm-12">
 								<h2>Leave a replay</h2>
 
-								<div class="text-area">
-									<div class="blank-arrow">
-										<label>Your Name</label>
+								<form id="comment-form" method="post" action="{% url 'comment_blog' blog.id %}" data-logged="{% if user.is_authenticated %}1{% else %}0{% endif %}">
+									{% csrf_token %}
+									<input type="hidden" name="parent_id" id="parent-id" value="">
+									<div class="text-area">
+										<div class="blank-arrow">
+											<label>{% if user.is_authenticated %}{{ user.username }}{% else %}Your Name{% endif %}</label>
+										</div>
+										<span>*</span>
+										<p id="replying-to" style="display:none;">
+											Đang trả lời <b id="replying-name"></b>
+											&nbsp;<a href="#" id="cancel-reply">(Hủy)</a>
+										</p>
+										<textarea name="content" id="comment-content" rows="11" placeholder="Nhập bình luận của bạn..."></textarea>
+										<button type="submit" class="btn btn-primary">post comment</button>
 									</div>
-									<span>*</span>
-									<textarea name="message" rows="11"></textarea>
-									<a class="btn btn-primary" href="">post comment</a>
-								</div>
+								</form>
 							</div>
 						</div>
 					</div><!--/Repaly Box-->
@@ -256,6 +220,40 @@
                 alert(data.message);
             }
         });
+    });
+
+    /* ================= COMMENT ================= */
+    const $form = $('#comment-form');
+
+    // bam nut Replay -> gan parent_id vao form
+    $('.btn-reply').click(function (e) {
+        e.preventDefault();
+        $('#parent-id').val($(this).data('parent-id'));
+        $('#replying-name').text($(this).data('parent-name'));
+        $('#replying-to').show();
+        $('html, body').animate({ scrollTop: $form.offset().top - 100 }, 400);
+        $('#comment-content').focus();
+    });
+
+    // huy tra loi -> quay ve comment cha
+    $('#cancel-reply').click(function (e) {
+        e.preventDefault();
+        $('#parent-id').val('');
+        $('#replying-to').hide();
+    });
+
+    // check login + noi dung rong ngay tai cho (server van check lai)
+    $form.submit(function (e) {
+        if ($form.data('logged') != 1) {
+            e.preventDefault();
+            alert('Vui lòng đăng nhập để bình luận.');
+            return false;
+        }
+        if ($.trim($('#comment-content').val()) === '') {
+            e.preventDefault();
+            alert('Bạn chưa nhập nội dung bình luận.');
+            return false;
+        }
     });
 });
 </script>

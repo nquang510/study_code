@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Blog
+from .models import Blog, Comment
 
 
 @admin.register(Blog)
@@ -13,3 +13,11 @@ class BlogAdmin(admin.ModelAdmin):
         if not obj.author_id:
             obj.author = request.user
         super().save_model(request, obj, form, change)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id", "id_blog", "id_user", "parent", "created_at")
+    list_filter = ("id_blog", "created_at")
+    search_fields = ("content", "id_user__username")
+    readonly_fields = ("created_at",)

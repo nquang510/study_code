@@ -1,9 +1,10 @@
 from django.core.paginator import Paginator
 from django.db.models import Q, Avg
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from .models import Blog, Rate
+from .models import Blog, Comment, Rate
 
 
 def blog_list(request):
@@ -42,6 +43,15 @@ def blog_detail(request, pk):
     check = False
     if request.user.is_authenticated:
         check = Rate.objects.filter(id_blog=blog, id_user=request.user).exists()
+
+    # chi lay comment cha, comment con lay qua cmt.replies.all trong template
+    comments = (
+        Comment.objects.filter(id_blog=blog, parent__isnull=True)
+        .select_related('id_user')
+        .prefetch_related('replies__id_user')
+    )
+    comment_count = Comment.objects.filter(id_blog=blog).count()
+
     return render(request, 'blog-detail.html', {
         'blog': blog,
         'next_post': next_post,
@@ -49,7 +59,9 @@ def blog_detail(request, pk):
         'average_rating': average_rating,
         'rate_count': rate_count,
         'check': check,
-        'stars': range(1, 6), 
+        'stars': range(1, 6),
+        'comments': comments,
+        'comment_count': comment_count,
     })
 
 
@@ -94,3 +106,34 @@ def rate_blog(request, pk):
         'average_rating': average_rating,
         'rate_count': rate_count,
     })
+
+
+@require_POST
+def comment_blog(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+
+    if not request.user.is_authenticated:
+        messages.error(request, 'Vui lòng đăng nhập để bình luận.')
+        return redirect('login')
+
+    content = (request.POST.get('content') or '').strip()
+    if not content:
+        messages.error(request, 'Nội dung bình luận không được để trống.')
+        return redirect('blog_detail', pk=blog.pk)
+
+    parent = None
+    parent_id = request.POST.get('parent_id')
+    if parent_id and parent_id.isdigit():
+        parent = Comment.objects.filter(pk=parent_id, id_blog=blog).first()
+        if parent and parent.parent_id:
+            parent = parent.parent
+
+    Comment.objects.create(
+        id_blog=blog,
+        id_user=request.user,
+        content=content,
+        parent=parent,
+    )
+
+    messages.success(request, 'Đã gửi bình luận.')
+    return redirect('blog_detail', pk=blog.pk)

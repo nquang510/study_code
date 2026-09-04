@@ -36,3 +36,25 @@ class Rate(models.Model):
         unique_together = ("id_blog", "id_user")
     def __str__(self):
         return f"{self.id_user.username} - {self.id_blog.title} - {self.rate}"
+
+
+class Comment(models.Model):
+    id_blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="comments")
+    id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField()
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="replies",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at", "id"]
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+
+    def __str__(self):
+        return f"{self.id_user.username} - {self.content[:30]}"
