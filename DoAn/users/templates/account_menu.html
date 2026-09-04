@@ -1,0 +1,30 @@
+{% load static %}
+{# Menu trai rieng cho khu vuc /account/ - tach ra tu account.html #}
+{% with url_name=request.resolver_match.url_name %}
+<div class="col-sm-3">
+  <div class="left-sidebar">
+    <h2>Account</h2>
+    <div class="panel-group category-products" id="accordian"><!--category-products-->
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a href="{% url 'account_update' %}"
+               {% if url_name == 'account_update' %}class="active"{% endif %}>Account</a>
+          </h4>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a href="{% url 'my_product' %}"
+               {% if url_name == 'my_product' or url_name == 'add_product' %}class="active"{% endif %}>My product</a>
+          </h4>
+        </div>
+      </div>
+
+    </div><!--/category-products-->
+  </div>
+</div>
+{% endwith %}

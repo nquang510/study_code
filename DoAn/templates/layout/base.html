@@ -28,7 +28,7 @@
     <section>
         <div class="container">
             <div class="row">
-                {% include 'layout/menu-left.html' %}
+                {% block sidebar %}{% include 'layout/menu-left.html' %}{% endblock %}
 
                 {% block content %}{% endblock %}
             </div>

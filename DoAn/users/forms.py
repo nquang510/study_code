@@ -61,3 +61,28 @@ class UserLoginForm(AuthenticationForm):
         label="Password",
         widget=forms.PasswordInput(attrs={"placeholder": "Password"}),
     )
+
+
+class UserUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ["email", "first_name", "last_name", "avatar", "id_country"]
+        widgets = {
+            "avatar": forms.FileInput(),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email and User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Email đã tồn tại.")
+        return email
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get("avatar")
+        if avatar and hasattr(avatar, "size"):
+            if avatar.size > 2 * 1024 * 1024: 
+                raise forms.ValidationError("Kích thước ảnh không được vượt quá 2MB.")
+            if not avatar.name.lower().endswith((".jpg", ".jpeg", ".png")):
+                raise forms.ValidationError("Định dạng ảnh không hợp lệ. Chỉ chấp nhận: .jpg, .jpeg, .png.")
+        return avatar

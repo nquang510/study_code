@@ -149,3 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model (AbstractUser)
 # https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#substituting-a-custom-user-model
 AUTH_USER_MODEL = 'users.User'
+
+# Trang login mac dinh cho @login_required
+LOGIN_URL = "/login/"

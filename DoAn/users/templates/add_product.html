@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Add product | E-Shopper{% endblock %}
+
+{% block sidebar %}{% include 'account_menu.html' %}{% endblock %}
+
+{% block content %}
+<div class="col-sm-9 padding-right">
+  <div class="blog-post-area">
+    <h2 class="title text-center">Add product</h2>
+    <p><a href="{% url 'my_product' %}">&laquo; Quay lại My product</a></p>
+  </div>
+</div>
+{% endblock %}
