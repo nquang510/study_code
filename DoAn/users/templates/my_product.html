@@ -9,10 +9,43 @@
 <div class="col-sm-9 padding-right">
   <div class="blog-post-area">
     <h2 class="title text-center">My product</h2>
-    <p>
-      <a href="{% url 'add_product' %}" class="btn btn-default">+ Add product</a>
+
+    <table class="table table-bordered text-center">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+
+      {% for p in products %}
+      <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>
+          {% if p.images %}
+            <img src="/media/products/{{ p.images.0 }}" width="60">
+          {% endif %}
+        </td>
+        <td>${{ p.price }}</td>
+        <td>
+          <a href="{% url 'edit_product' p.id %}"><i class="fa fa-edit"></i></a>
+          &nbsp;
+          <a href="{% url 'delete_product' p.id %}" onclick="return confirm('Xoá sản phẩm này?')"><i class="fa fa-times"></i></a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">Không có mặt hàng nào</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <p class="text-right">
+      <a href="{% url 'add_product' %}" class="btn btn-default">Add New</a>
     </p>
-    <p>Chưa có sản phẩm nào.</p>
+
   </div>
 </div>
 {% endblock %}

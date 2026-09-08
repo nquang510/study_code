@@ -5,9 +5,11 @@ from django.urls import include, path
 from django.shortcuts import render
 from users.views import register_view, login_view, custom_logout
 from blog.views import blog_list, blog_detail, rate_blog, comment_blog
+from users.models import Product
 
 def index(request):
-    return render(request, 'index.html')
+    products = Product.objects.order_by('-created_at', '-id')[:6]
+    return render(request, 'index.html', {'products': products})
 
 def shop(request):
     return render(request, 'shop.html')

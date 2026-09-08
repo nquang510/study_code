@@ -1,0 +1,94 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<div class="col-sm-9 padding-right">
+  <div class="blog-post-area">
+    <h2 class="title text-center">Edit product</h2>
+
+    <form id="productForm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <input type="text" name="name" value="{{ product.name }}" class="form-control">
+      <p class="text-danger" id="error-name"></p>
+
+      <input type="number" step="0.01" name="price" value="{{ product.price }}" class="form-control">
+      <p class="text-danger" id="error-price"></p>
+
+      <select name="id_category" class="form-control">
+        <option value="">Please choose category</option>
+        {% for c in categories %}
+          <option value="{{ c.id }}" {% if c.id == product.id_category_id %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+      <p class="text-danger" id="error-id_category"></p>
+
+      <select name="id_brand" class="form-control">
+        <option value="">Please choose brand</option>
+        {% for b in brands %}
+          <option value="{{ b.id }}" {% if b.id == product.id_brand_id %}selected{% endif %}>{{ b.name }}</option>
+        {% endfor %}
+      </select>
+      <p class="text-danger" id="error-id_brand"></p>
+
+      <select name="status" id="status" class="form-control">
+        <option value="0" {% if product.status == 0 %}selected{% endif %}>New</option>
+        <option value="1" {% if product.status == 1 %}selected{% endif %}>Sale</option>
+      </select>
+
+      <div id="sale-box" style="display: {% if product.status == 1 %}block{% else %}none{% endif %};">
+        <input type="number" name="sale" value="{{ product.sale }}" class="form-control"> %
+      </div>
+
+      <input type="text" name="company" value="{{ product.company|default_if_none:'' }}" class="form-control">
+
+      <input type="file" name="images" id="images" multiple>
+      <p class="text-danger" id="error-images"></p>
+
+      <div style="margin:10px 0;">
+        {% for img in product.images %}
+          <div style="display:inline-block; text-align:center; margin-right:10px;">
+            <img src="/media/products/{{ img }}" width="60"><br>
+            <input type="checkbox" name="hinhxoa" value="{{ img }}">
+          </div>
+        {% endfor %}
+      </div>
+
+      <textarea name="detail" class="form-control">{{ product.detail|default_if_none:'' }}</textarea>
+
+      <button type="submit" class="btn btn-default">Update</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(function () {
+  $("#status").change(function () {
+    $("#sale-box").toggle($(this).val() === "1");
+  });
+
+  $("#productForm").submit(function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: "{% url 'edit_product_ajax' product.id %}",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function () {
+        window.location.href = "{% url 'my_product' %}";
+      },
+      error: function (xhr) {
+        const errors = xhr.responseJSON.errors || {};
+        $(".text-danger").text("");
+        $.each(errors, function (key, msg) {
+          $("#error-" + key).text(msg);
+        });
+      }
+    });
+  });
+});
+</script>
+{% endblock %}
