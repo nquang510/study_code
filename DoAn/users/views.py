@@ -256,3 +256,15 @@ def delete_product(request, pk):
 
     product.delete()
     return redirect("my_product")
+
+def product_details(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    gia_sale = None
+    if product.status == 1 and product.sale:
+        gia_sale = product.price * (100 - product.sale) / 100
+
+    return render(request, 'product_details.html', {
+        'product': product,
+        'gia_sale': gia_sale,
+    })

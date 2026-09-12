@@ -78,10 +78,14 @@
 									<div class="single-products">
 										<div class="productinfo text-center">
 											{% if p.images %}
-												<img class="img" src="/media/products/{{ p.images.0 }}" alt="{{ p.name }}" />
+												<a href="{% url 'product_details' p.id %}">
+													<img class="img" src="/media/products/{{ p.images.0 }}" alt="{{ p.name }}" />
+												</a>
 											{% endif %}
 											<h2 class="price">${{ p.price }}</h2>
-											<p class="name">{{ p.name }}</p>
+											<p class="name">
+												<a href="{% url 'product_details' p.id %}">{{ p.name }}</a>
+											</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 
@@ -94,7 +98,7 @@
 										<div class="product-overlay">
 											<div class="overlay-content">
 												<h2 class="price">${{ p.price }}</h2>
-												<p class="name">{{ p.name }}</p>
+												<p class="name"><a href="{% url 'product_details' p.id %}">{{ p.name }}</a></p>
 												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 											</div>
 										</div>

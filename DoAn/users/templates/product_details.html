@@ -1,68 +1,91 @@
-{% load static %}
 {% extends 'layout/base.html' %}
+{% load static %}
 
 {% block title %}Product Details | E-Shopper{% endblock %}
+
+{% block extra_css %}
+<style>
+    #main-image {
+        width: 100%;
+        height: 350px;
+        object-fit: contain;
+        background: #fff;
+    }
+
+	#similar-product .item {
+        text-align: center;
+    }
+    .thumb-item {
+        display: inline-block;
+        margin: 5px 3px 0 3px;
+        border: 1px solid #ddd;
+        padding: 2px;
+    }
+    .thumb-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        display: block;
+    }
+    .thumb-item:hover {
+        border-color: #FE980F;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="col-sm-9 padding-right">
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img src="{% static 'images/product-details/1.jpg' %}" alt="" />
-								<a href="{% static 'images/product-details/1.jpg' %}" rel="prettyPhoto"><h3>ZOOM</h3></a>
-								
+								<!-- Hình lớn: click mở hình fullsize -->
+								<a id="zoom-link" href="/media/products/{{ product.images.0 }}">
+									<img id="main-image" src="/media/products/{{ product.images.0 }}" alt="{{ product.name }}" />
+								</a>
 							</div>
+
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
-								
-								  <!-- Wrapper for slides -->
-								    <div class="carousel-inner">
-										<div class="item active">
-										  <a href=""><img src="{% static 'images/product-details/similar1.jpg' %}" alt=""></a>
-										  <a href=""><img src="{% static 'images/product-details/similar2.jpg' %}" alt=""></a>
-										  <a href=""><img src="{% static 'images/product-details/similar3.jpg' %}" alt=""></a>
-										</div>
-										<div class="item">
-										  <a href=""><img src="{% static 'images/product-details/similar1.jpg' %}" alt=""></a>
-										  <a href=""><img src="{% static 'images/product-details/similar2.jpg' %}" alt=""></a>
-										  <a href=""><img src="{% static 'images/product-details/similar3.jpg' %}" alt=""></a>
-										</div>
-										<div class="item">
-										  <a href=""><img src="{% static 'images/product-details/similar1.jpg' %}" alt=""></a>
-										  <a href=""><img src="{% static 'images/product-details/similar2.jpg' %}" alt=""></a>
-										  <a href=""><img src="{% static 'images/product-details/similar3.jpg' %}" alt=""></a>
-										</div>
-										
+								<div class="carousel-inner">
+									<div class="item active">
+										{% for img in product.images %}
+										<a href="#" class="thumb-item" data-img="/media/products/{{ img }}">
+											<img src="/media/products/{{ img }}" alt="">
+										</a>
+										{% endfor %}
 									</div>
+								</div>
 
-								  <!-- Controls -->
-								  <a class="left item-control" href="#similar-product" data-slide="prev">
-									<i class="fa fa-angle-left"></i>
-								  </a>
-								  <a class="right item-control" href="#similar-product" data-slide="next">
-									<i class="fa fa-angle-right"></i>
-								  </a>
 							</div>
-
 						</div>
+
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
-								<img src="{% static 'images/product-details/new.jpg' %}" class="newarrival" alt="" />
-								<h2>Anne Klein Sleeveless Colorblock Scuba</h2>
-								<p>Web ID: 1089772</p>
-								<img src="{% static 'images/product-details/rating.png' %}" alt="" />
+								{% if product.status == 0 %}
+									<img src="{% static 'images/product-details/new.jpg' %}" class="newarrival" alt="" />
+								{% endif %}
+
+								<h2>{{ product.name }}</h2>
+								<p>Web ID: {{ product.id }}</p>
+
 								<span>
-									<span>US $59</span>
+									{% if gia_sale %}
+										<span><del>${{ product.price }}</del> ${{ gia_sale|floatformat:2 }}</span>
+									{% else %}
+										<span>${{ product.price }}</span>
+									{% endif %}
 									<label>Quantity:</label>
-									<input type="text" value="3" />
+									<input type="text" value="1" />
 									<button type="button" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
 									</button>
 								</span>
-								<p><b>Availability:</b> In Stock</p>
-								<p><b>Condition:</b> New</p>
-								<p><b>Brand:</b> E-SHOPPER</p>
-								<a href=""><img src="{% static 'images/product-details/share.png' %}" class="share img-responsive"  alt="" /></a>
+
+								<p><b>Category:</b> {{ product.id_category.name }}</p>
+								<p><b>Brand:</b> {{ product.id_brand.name }}</p>
+								<p><b>Condition:</b> {% if product.status == 1 %}Sale {{ product.sale }}%{% else %}New{% endif %}</p>
+								<p><b>Company:</b> {{ product.company|default_if_none:'' }}</p>
+								<p><b>Detail:</b> {{ product.detail|default_if_none:'' }}</p>
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->
@@ -350,12 +373,34 @@
 					
 				</div>
 
+<!-- popup hien hinh full size -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-body text-center" style="padding:0;">
+				<img id="modal-image" src="" alt="" style="max-width:100%;">
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
     <script type="text/javascript">
     	$(document).ready(function(){
-		    $("a[rel^='prettyPhoto']").prettyPhoto();
+		    $(".thumb-item").click(function (e) {
+		        e.preventDefault();
+		        var src = $(this).data("img");
+		        $("#main-image").attr("src", src);
+		        $("#zoom-link").attr("href", src);
+		    });
+
+		    $("#zoom-link").click(function (e) {
+		        e.preventDefault();
+		        $("#modal-image").attr("src", $(this).attr("href"));
+		        $("#imageModal").modal("show");
+		    });
 		});
     </script>
 {% endblock %}
