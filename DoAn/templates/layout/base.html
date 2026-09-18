@@ -43,6 +43,30 @@
     <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
     <script src="{% static 'js/price-range.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+    $(document).on("click", ".add-to-cart, .cart", function (e) {
+      e.preventDefault();
+      var id = $(this).data("id");
+      if (!id) {
+        return; 
+      }
+
+      $.ajax({
+        url: "{% url 'add_to_cart_ajax' %}",
+        type: "POST",
+        data: {
+          id: id,
+          csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        success: function (data) {
+          $("#cart-count").text(data.cart_count);
+        },
+        error: function () {
+          alert("Thêm vào giỏ hàng thất bại!");
+        }
+      });
+    });
+    </script>
     {% block extra_js %}{% endblock %}
     
 </body>

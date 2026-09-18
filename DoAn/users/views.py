@@ -268,3 +268,100 @@ def product_details(request, pk):
         'product': product,
         'gia_sale': gia_sale,
     })
+
+@require_POST
+def add_to_cart_ajax(request):
+    product_id = request.POST.get("id")
+    product = get_object_or_404(Product, pk=product_id)
+    cart = request.session.get("cart", {})
+
+    key = str(product.id)
+
+    if key in cart:
+        cart[key]["qty"] += 1
+    else:
+        cart[key] = {
+            "name": product.name,
+            "price": float(product.price),
+            "image": product.images[0] if product.images else "",
+            "qty": 1,
+        }
+
+    request.session["cart"] = cart
+    tong = 0
+    for item in cart.values():
+        tong += item["qty"]
+
+    return JsonResponse({"status": "ok", "cart_count": tong})
+
+
+def tinh_cart_count(cart):
+    tong = 0
+    for item in cart.values():
+        tong += item["qty"]
+    return tong
+
+
+def tinh_sub_total(cart):
+    tong = 0
+    for item in cart.values():
+        tong += item["price"] * item["qty"]
+    return round(tong, 2)
+
+
+def cart_view(request):
+    cart = request.session.get("cart", {})
+    items = []
+    for key, item in cart.items():
+        items.append({
+            "id": key,
+            "name": item["name"],
+            "price": item["price"],
+            "image": item["image"],
+            "qty": item["qty"],
+            "total": round(item["price"] * item["qty"], 2),
+        })
+
+    return render(request, "cart.html", {
+        "items": items,
+        "sub_total": tinh_sub_total(cart),
+    })
+
+
+@require_POST
+def update_cart_ajax(request):
+    key = str(request.POST.get("id"))
+    action = request.POST.get("action")
+
+    cart = request.session.get("cart", {})
+
+    if key not in cart:
+        return JsonResponse({"status": "error"}, status=400)
+
+    if action == "up":
+        cart[key]["qty"] += 1
+    elif action == "down":
+        if cart[key]["qty"] > 1:
+            cart[key]["qty"] -= 1
+    elif action == "delete":
+        del cart[key]
+
+    request.session["cart"] = cart
+
+    qty = 0
+    total = 0
+    if key in cart:
+        qty = cart[key]["qty"]
+        total = round(cart[key]["price"] * qty, 2)
+
+    return JsonResponse({
+        "status": "ok",
+        "qty": qty,
+        "total": total,
+        "sub_total": tinh_sub_total(cart),
+        "cart_count": tinh_cart_count(cart),
+    })
+
+
+def checkout_view(request):
+    return render(request, "checkout.html")

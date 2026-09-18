@@ -2,6 +2,8 @@
 
 {% block title %}Cart | E-Shopper{% endblock %}
 
+{% block sidebar %}{% endblock %}
+
 {% block content %}
 <section id="cart_items">
 		<div class="container">
@@ -24,82 +26,39 @@
 						</tr>
 					</thead>
 					<tbody id="cart-table">
-						<tr>
+						{% for item in items %}
+						<tr data-id="{{ item.id }}">
 							<td class="cart_product">
-								<a href=""><img src="static/images/cart/one.png" alt=""></a>
+								{% if item.image %}
+								<a href=""><img src="/media/products/{{ item.image }}" alt="" width="110"></a>
+								{% endif %}
 							</td>
 							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
+								<h4><a href="{% url 'product_details' item.id %}">{{ item.name }}</a></h4>
+								<p>Web ID: {{ item.id }}</p>
 							</td>
 							<td class="cart_price">
-								<p>$59</p>
+								<p>${{ item.price }}</p>
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
 									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
+									<input class="cart_quantity_input" type="text" name="quantity" value="{{ item.qty }}" autocomplete="off" size="2" readonly>
 									<a class="cart_quantity_down" href=""> - </a>
 								</div>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
+								<p class="cart_total_price">${{ item.total }}</p>
 							</td>
 							<td class="cart_delete">
 								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
 							</td>
 						</tr>
-
+						{% empty %}
 						<tr>
-							<td class="cart_product">
-								<a href=""><img src="static/images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
+							<td colspan="6" style="text-align:center; padding:30px;">Giỏ hàng trống.</td>
 						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="static/images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
 			</div>
@@ -170,16 +129,61 @@
 				<div class="col-sm-6">
 					<div class="total_area">
 						<ul>
-							<li>Cart Sub Total <span class="cart_sub_total">$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
+							<li>Cart Sub Total <span class="cart_sub_total">${{ sub_total }}</span></li>
 							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
+							<li>Total <span class="cart_sub_total">${{ sub_total }}</span></li>
 						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
+							<a class="btn btn-default check_out" href="{% url 'checkout' %}">Check Out</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).on("click", ".cart_quantity_up, .cart_quantity_down, .cart_quantity_delete", function (e) {
+  e.preventDefault();
+
+  var tr = $(this).closest("tr");
+  var id = tr.data("id");
+
+  var action = "up";
+  if ($(this).hasClass("cart_quantity_down")) {
+    action = "down";
+  } else if ($(this).hasClass("cart_quantity_delete")) {
+    action = "delete";
+  }
+
+  var qty = parseInt(tr.find(".cart_quantity_input").val());
+  if (action === "down" && qty <= 1) {
+    alert("Số lượng tối thiểu là 1");
+    return;
+  }
+
+  $.ajax({
+    url: "{% url 'update_cart_ajax' %}",
+    type: "POST",
+    data: {
+      id: id,
+      action: action,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    },
+    success: function (data) {
+      if (action === "delete") {
+        tr.remove();
+      } else {
+        tr.find(".cart_quantity_input").val(data.qty);
+        tr.find(".cart_total_price").text("$" + data.total);
+      }
+      $(".cart_sub_total").text("$" + data.sub_total);
+      $("#cart-count").text(data.cart_count);
+    },
+    error: function () {
+      alert("Cập nhật giỏ hàng thất bại!");
+    }
+  });
+});
+</script>
 {% endblock %}

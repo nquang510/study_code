@@ -85,10 +85,10 @@
                 <a href=""><i class="fa fa-star"></i> Wishlist</a>
               </li>
               <li>
-                <a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a>
+                <a href="{% url 'checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a>
               </li>
               <li>
-                <a href="#">
+                <a href="{% url 'cart' %}">
                   <i class="fa fa-shopping-cart"></i> Cart
                   <span id="cart-count" style="
                       background: #fe980f;
@@ -148,10 +148,10 @@
                     <a href="product-details.html">Product Details</a>
                   </li>
                   <li>
-                    <a href="checkout.html">Checkout</a>
+                    <a href="{% url 'checkout' %}">Checkout</a>
                   </li>
                   <li>
-                    <a href="#">Cart</a>
+                    <a href="{% url 'cart' %}">Cart</a>
                   </li>
                   <li>
                     <a href="login.html">Login</a>

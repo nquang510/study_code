@@ -86,7 +86,7 @@
 											<p class="name">
 												<a href="{% url 'product_details' p.id %}">{{ p.name }}</a>
 											</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<a href="#" class="btn btn-default add-to-cart" data-id="{{ p.id }}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 
 										{% if p.status == 1 %}
@@ -99,7 +99,7 @@
 											<div class="overlay-content">
 												<h2 class="price">${{ p.price }}</h2>
 												<p class="name"><a href="{% url 'product_details' p.id %}">{{ p.name }}</a></p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+												<a href="#" class="btn btn-default add-to-cart" data-id="{{ p.id }}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 											</div>
 										</div>
 									</div>

@@ -99,7 +99,7 @@
 							{% for cmt in comments %}
 							<li class="media" id="comment-{{ cmt.id }}">
 								<a class="pull-left" href="#">
-									<img class="media-object" src="{{ cmt.id_user.avatar.url }}" alt="{{ cmt.id_user.username }}">
+									<img class="media-object" src="{% if cmt.id_user.avatar %}{{ cmt.id_user.avatar.url }}{% else %}{% static 'images/blog/man-one.jpg' %}{% endif %}" alt="{{ cmt.id_user.username }}">
 								</a>
 								<div class="media-body">
 									<ul class="sinlge-post-meta">
@@ -115,7 +115,7 @@
 							{% for reply in cmt.replies.all %}
 							<li class="media second-media" id="comment-{{ reply.id }}">
 								<a class="pull-left" href="#">
-									<img class="media-object" src="{{ reply.id_user.avatar.url }}" alt="{{ reply.id_user.username }}">
+									<img class="media-object" src="{% if reply.id_user.avatar %}{{ reply.id_user.avatar.url }}{% else %}{% static 'images/blog/man-one.jpg' %}{% endif %}" alt="{{ reply.id_user.username }}">
 								</a>
 								<div class="media-body">
 									<ul class="sinlge-post-meta">
