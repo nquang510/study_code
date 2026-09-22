@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Xác nhận đơn hàng</title>
+</head>
+<body style="margin:0; padding:20px; background-color:#f4f4f4; font-family:Arial, Helvetica, sans-serif; color:#333;">
+
+  <div style="max-width:600px; margin:0 auto; background-color:#ffffff; border-radius:6px; overflow:hidden;">
+
+    <div style="background-color:#FE980F; padding:20px; text-align:center;">
+      <h1 style="margin:0; color:#ffffff; font-size:24px;">E-Shopper</h1>
+      <p style="margin:5px 0 0; color:#ffffff;">Xác nhận đơn hàng #{{ history.id }}</p>
+    </div>
+
+    <div style="padding:20px;">
+      <h2 style="margin-top:0; font-size:18px;">Chào {{ history.name }}!</h2>
+      <p>Cảm ơn bạn đã đặt hàng tại E-Shopper. Dưới đây là thông tin đơn hàng của bạn:</p>
+
+      <h3 style="font-size:15px; border-bottom:1px solid #eee; padding-bottom:6px;">Thông tin người mua</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <tr>
+          <td style="padding:6px 0; width:120px; color:#777;">Họ tên:</td>
+          <td style="padding:6px 0;">{{ history.name }}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0; color:#777;">Email:</td>
+          <td style="padding:6px 0;">{{ history.email }}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0; color:#777;">Điện thoại:</td>
+          <td style="padding:6px 0;">{{ history.phone|default:"(chưa cập nhật)" }}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0; color:#777;">Ngày đặt:</td>
+          <td style="padding:6px 0;">{{ history.created_at|date:"d/m/Y H:i" }}</td>
+        </tr>
+      </table>
+
+      <h3 style="font-size:15px; border-bottom:1px solid #eee; padding-bottom:6px; margin-top:25px;">Chi tiết đơn hàng</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead>
+          <tr style="background-color:#f7f7f7;">
+            <th style="padding:8px; text-align:left; border-bottom:1px solid #e5e5e5;">Sản phẩm</th>
+            <th style="padding:8px; text-align:right; border-bottom:1px solid #e5e5e5;">Giá</th>
+            <th style="padding:8px; text-align:center; border-bottom:1px solid #e5e5e5;">SL</th>
+            <th style="padding:8px; text-align:right; border-bottom:1px solid #e5e5e5;">Tổng</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0;">{{ item.name }}</td>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;">${{ item.price }}</td>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:center;">{{ item.qty }}</td>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;">${{ item.total }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3" style="padding:10px 8px; text-align:right; font-weight:bold;">Tổng cộng</td>
+            <td style="padding:10px 8px; text-align:right; font-weight:bold; color:#FE980F;">${{ sub_total }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="color:#777; font-size:13px; margin-top:25px;">Chúc bạn một ngày tốt lành!</p>
+    </div>
+
+    <div style="background-color:#f7f7f7; padding:15px; text-align:center; font-size:12px; color:#999;">
+      © E-Shopper. Email này được gửi tự động, vui lòng không trả lời.
+    </div>
+
+  </div>
+
+</body>
+</html>

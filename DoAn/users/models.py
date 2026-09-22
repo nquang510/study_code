@@ -16,6 +16,7 @@ class Country(models.Model):
 
 class User(AbstractUser):
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Phone")
 
     id_country = models.ForeignKey(
         Country,
@@ -58,3 +59,25 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class History(models.Model):
+    id_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="histories",
+        verbose_name="User",
+    )
+    name       = models.CharField(max_length=255)
+    email      = models.EmailField()
+    phone      = models.CharField(max_length=20, blank=True, null=True)
+    price      = models.DecimalField(max_digits=12, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "History"
+        verbose_name_plural = "Histories"
+        ordering = ["-created_at", "-id"]
+
+    def __str__(self):
+        return f"{self.name} - {self.price}"

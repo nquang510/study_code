@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from .forms import UserLoginForm, UserRegisterForm, UserUpdateForm
-from .models import Product, Category, Brand
+from .models import Product, Category, Brand, History
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 import os, time
 from django.conf import settings
 from django.http import JsonResponse
@@ -363,5 +365,109 @@ def update_cart_ajax(request):
     })
 
 
+def lay_cart_items(request):
+    cart = request.session.get("cart", {})
+    items = []
+    for key, item in cart.items():
+        items.append({
+            "id": key,
+            "name": item["name"],
+            "price": item["price"],
+            "image": item["image"],
+            "qty": item["qty"],
+            "total": round(item["price"] * item["qty"], 2),
+        })
+    return items, tinh_sub_total(cart)
+
+
 def checkout_view(request):
-    return render(request, "checkout.html")
+    items, sub_total = lay_cart_items(request)
+
+    context = {
+        "items": items,
+        "sub_total": sub_total,
+    }
+
+    # Nếu chưa đăng nhập -> Hiển thị form register cho người dùng
+    if not request.user.is_authenticated:
+        context["form"] = UserRegisterForm()
+
+    return render(request, "checkout.html", context)
+
+
+def gui_mail_don_hang(user, items, sub_total, history):
+    subject = f"Xác nhận đơn hàng #{history.id} - E-Shopper"
+    from_email = settings.DEFAULT_FROM_EMAIL
+    to = [history.email]
+
+    text_content = f"""Chao {history.name}, cảm ơn bạn đã đặt hàng tại E-Shopper."""
+
+
+    html_content = render_to_string("emails/order_email.html", {
+        "user": user,
+        "history": history,
+        "items": items,
+        "sub_total": sub_total,
+    })
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+@require_POST
+def place_order(request):
+    items, sub_total = lay_cart_items(request)
+
+    # Giỏ hàng trống không oder được
+    if not items:
+        messages.error(request, "Giỏ hàng trống không thể đặt hàng.")
+        return redirect("cart")
+
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        # Chưa có tài khoàn -> đăng ký
+        form = UserRegisterForm(request.POST, request.FILES)
+        if not form.is_valid():
+            return render(request, "checkout.html", {
+                "items": items,
+                "sub_total": sub_total,
+                "form": form,
+            })
+
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data["password"])
+        user.is_superuser = False
+        user.is_staff = False
+        user.save()
+
+        # Đăng nhập cho user vừa đăng ký
+        login(request, user)
+
+    ten = (f"{user.first_name} {user.last_name}").strip() or user.username
+
+    history = History.objects.create(
+        id_user=user,
+        name=ten,
+        email=user.email,
+        phone=user.phone,
+        price=sub_total,
+    )
+
+    loi_mail = None
+    try:
+        gui_mail_don_hang(user, items, sub_total, history)
+    except Exception as e:
+        loi_mail = str(e)
+
+    # Order xong xóa giỏ hàng trong session
+    request.session["cart"] = {}
+
+    return render(request, "order_success.html", {
+        "history": history,
+        "items": items,
+        "sub_total": sub_total,
+        "loi_mail": loi_mail,
+    })
+

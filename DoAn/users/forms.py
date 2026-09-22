@@ -19,7 +19,7 @@ class UserRegisterForm(forms.ModelForm):
         model = User
         fields = [
             "username", "email", "password", "confirm_password",
-            "avatar", "first_name", "last_name", "id_country",
+            "avatar", "first_name", "last_name", "phone", "id_country",
         ]
 
     def clean_username(self):
@@ -67,7 +67,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "avatar", "id_country"]
+        fields = ["email", "first_name", "last_name", "phone", "avatar", "id_country"]
         widgets = {
             "avatar": forms.FileInput(),
         }

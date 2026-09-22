@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt hàng thành công | E-Shopper{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+<section id="cart_items">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+			  <li><a href="{% url 'index' %}">Home</a></li>
+			  <li class="active">Đặt hàng thành công</li>
+			</ol>
+		</div>
+
+		<div class="alert alert-success">
+			<h4>Đặt hàng thành công!</h4>
+			<p>Mã đơn hàng: <b>#{{ history.id }}</b></p>
+			{% if loi_mail %}
+				<p style="color:#a94442;">Đơn hàng đã được lưu nhưng gửi mail thất bại: {{ loi_mail }}</p>
+			{% else %}
+				<p>Thông tin đơn hàng đã được gửi tới email <b>{{ history.email }}</b>.</p>
+			{% endif %}
+		</div>
+
+		<div class="table-responsive cart_info">
+			<table class="table table-condensed">
+				<thead>
+					<tr class="cart_menu">
+						<td class="description">Sản phẩm</td>
+						<td class="price">Giá</td>
+						<td class="quantity">Số lượng</td>
+						<td class="total">Tổng</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+					<tr>
+						<td class="cart_description"><h4>{{ item.name }}</h4></td>
+						<td class="cart_price"><p>${{ item.price }}</p></td>
+						<td class="cart_quantity"><p>{{ item.qty }}</p></td>
+						<td class="cart_total"><p class="cart_total_price">${{ item.total }}</p></td>
+					</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="3" style="text-align:right;"><b>Tổng cộng</b></td>
+						<td><b>${{ sub_total }}</b></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div style="margin-bottom:40px;"></div>
+	</div>
+</section>
+{% endblock %}

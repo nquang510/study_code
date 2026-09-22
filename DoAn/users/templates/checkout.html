@@ -6,110 +6,79 @@
 {% block sidebar %}{% endblock %}
 
 {% block content %}
-	<section id="cart_items">
-		<div class="container">
-			<div class="breadcrumbs">
-				<ol class="breadcrumb">
-				  <li><a href="#">Home</a></li>
-				  <li class="active">Check out</li>
-				</ol>
-			</div><!--/breadcrums-->
+<section id="cart_items">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+			  <li><a href="{% url 'index' %}">Home</a></li>
+			  <li class="active">Check out</li>
+			</ol>
+		</div><!--/breadcrums-->
 
-			<div class="step-one">
-				<h2 class="heading">Step1</h2>
-			</div>
-			<div class="checkout-options">
-				<h3>New User</h3>
-				<p>Checkout options</p>
-				<ul class="nav">
-					<li>
-						<label><input type="checkbox"> Register Account</label>
-					</li>
-					<li>
-						<label><input type="checkbox"> Guest Checkout</label>
-					</li>
-					<li>
-						<a href=""><i class="fa fa-times"></i>Cancel</a>
-					</li>
-				</ul>
-			</div><!--/checkout-options-->
+		<form action="{% url 'place_order' %}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
 
-			<div class="register-req">
-				<p>Please use Register And Checkout to easily get access to your order history, or use Checkout as Guest</p>
-			</div><!--/register-req-->
-
-			<div class="shopper-informations">
-				<div class="row">
-					<div class="col-sm-3">
-						<div class="shopper-info">
-							<p>Shopper Information</p>
-							<form>
-								<input type="text" placeholder="Display Name">
-								<input type="text" placeholder="User Name">
-								<input type="password" placeholder="Password">
-								<input type="password" placeholder="Confirm password">
-							</form>
-							<a class="btn btn-primary" href="">Get Quotes</a>
-							<a class="btn btn-primary" href="">Continue</a>
-						</div>
-					</div>
-					<div class="col-sm-5 clearfix">
-						<div class="bill-to">
-							<p>Bill To</p>
-							<div class="form-one">
-								<form>
-									<input type="text" placeholder="Company Name">
-									<input type="text" placeholder="Email*">
-									<input type="text" placeholder="Title">
-									<input type="text" placeholder="First Name *">
-									<input type="text" placeholder="Middle Name">
-									<input type="text" placeholder="Last Name *">
-									<input type="text" placeholder="Address 1 *">
-									<input type="text" placeholder="Address 2">
-								</form>
-							</div>
-							<div class="form-two">
-								<form>
-									<input type="text" placeholder="Zip / Postal Code *">
-									<select>
-										<option>-- Country --</option>
-										<option>United States</option>
-										<option>Bangladesh</option>
-										<option>UK</option>
-										<option>India</option>
-										<option>Pakistan</option>
-										<option>Ucrane</option>
-										<option>Canada</option>
-										<option>Dubai</option>
-									</select>
-									<select>
-										<option>-- State / Province / Region --</option>
-										<option>United States</option>
-										<option>Bangladesh</option>
-										<option>UK</option>
-										<option>India</option>
-										<option>Pakistan</option>
-										<option>Ucrane</option>
-										<option>Canada</option>
-										<option>Dubai</option>
-									</select>
-									<input type="password" placeholder="Confirm password">
-									<input type="text" placeholder="Phone *">
-									<input type="text" placeholder="Mobile Phone">
-									<input type="text" placeholder="Fax">
-								</form>
+			{% if not user.is_authenticated and items %}
+					<div class="col-sm-9 padding-right">
+						<div class="blog-post-area">
+							<h2 class="title">Đăng ký</h2>
+							<div class="signup-form">
+								{% if form.non_field_errors %}
+									<div class="alert alert-danger">{{ form.non_field_errors }}</div>
+								{% endif %}
+								<div>
+									<label>Username:</label>
+									{{ form.username }}
+									{{ form.username.errors }}
+								</div>
+								<div>
+									<label>Email:</label>
+									{{ form.email }}
+									{{ form.email.errors }}
+								</div>
+								<div>
+									<label>Password:</label>
+									{{ form.password }}
+									{{ form.password.errors }}
+								</div>
+								<div>
+									<label>Confirm Password:</label>
+									{{ form.confirm_password }}
+									{{ form.confirm_password.errors }}
+								</div>
+								<div>
+									<label>Avatar:</label>
+									{{ form.avatar }}
+									{{ form.avatar.errors }}
+								</div>
+								<div>
+									<label>First name:</label>
+									{{ form.first_name }}
+									{{ form.first_name.errors }}
+								</div>
+								<div>
+									<label>Last name:</label>
+									{{ form.last_name }}
+									{{ form.last_name.errors }}
+								</div>
+								<div>
+									<label>Phone:</label>
+									{{ form.phone }}
+									{{ form.phone.errors }}
+								</div>
+								<div>
+									<label>Country:</label>
+									{{ form.id_country }}
+									{{ form.id_country.errors }}
+								</div>
+								<button type="submit" class="btn btn-default">Đăng ký &amp; Đặt hàng</button>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="order-message">
-							<p>Shipping Order</p>
-							<textarea name="message"  placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
-							<label><input type="checkbox"> Shipping to bill address</label>
-						</div>	
-					</div>					
 				</div>
 			</div>
+			{% endif %}
+
 			<div class="review-payment">
 				<h2>Review & Payment</h2>
 			</div>
@@ -123,123 +92,69 @@
 							<td class="price">Price</td>
 							<td class="quantity">Quantity</td>
 							<td class="total">Total</td>
-							<td></td>
 						</tr>
 					</thead>
 					<tbody>
+						{% for item in items %}
 						<tr>
 							<td class="cart_product">
-								<a href=""><img src="{% static 'images/cart/one.png' %}" alt=""></a>
+								{% if item.image %}
+								<a href="{% url 'product_details' item.id %}"><img src="/media/products/{{ item.image }}" alt="" width="110"></a>
+								{% endif %}
 							</td>
 							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
+								<h4><a href="{% url 'product_details' item.id %}">{{ item.name }}</a></h4>
+								<p>Web ID: {{ item.id }}</p>
 							</td>
 							<td class="cart_price">
-								<p>$59</p>
+								<p>${{ item.price }}</p>
 							</td>
 							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
+								<p>{{ item.qty }}</p>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								<p class="cart_total_price">${{ item.total }}</p>
 							</td>
 						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="5" style="text-align:center; padding:30px;">Giỏ hàng trống.</td>
+						</tr>
+						{% endfor %}
 
+						{% if items %}
 						<tr>
-							<td class="cart_product">
-								<a href=""><img src="{% static 'images/cart/two.png' %}" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="{% static 'images/cart/three.png' %}" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="4">&nbsp;</td>
+							<td colspan="3">&nbsp;</td>
 							<td colspan="2">
 								<table class="table table-condensed total-result">
 									<tr>
 										<td>Cart Sub Total</td>
-										<td>$59</td>
-									</tr>
-									<tr>
-										<td>Exo Tax</td>
-										<td>$2</td>
+										<td>${{ sub_total }}</td>
 									</tr>
 									<tr class="shipping-cost">
 										<td>Shipping Cost</td>
-										<td>Free</td>										
+										<td>Free</td>
 									</tr>
 									<tr>
 										<td>Total</td>
-										<td><span>$61</span></td>
+										<td><span>${{ sub_total }}</span></td>
 									</tr>
 								</table>
 							</td>
 						</tr>
+						{% endif %}
 					</tbody>
 				</table>
 			</div>
-			<div class="payment-options">
-					<span>
-						<label><input type="checkbox"> Direct Bank Transfer</label>
-					</span>
-					<span>
-						<label><input type="checkbox"> Check Payment</label>
-					</span>
-					<span>
-						<label><input type="checkbox"> Paypal</label>
-					</span>
-				</div>
-		</div>
-	</section> <!--/#cart_items-->
+
+			{% if items %}
+			<div style="text-align:right; margin-bottom:40px;">
+				<button type="submit" class="btn btn-default check_out">
+					{% if user.is_authenticated %}Order{% else %}Đăng ký &amp; Đặt hàng{% endif %}
+				</button>
+			</div>
+			{% endif %}
+		</form>
+	</div>
+</section> <!--/#cart_items-->
 {% endblock %}

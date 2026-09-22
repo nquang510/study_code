@@ -1438,7 +1438,10 @@ h2.title {
 .login-form form input,
 .signup-form form input,
 .signup-form form select,
-.signup-form form textarea {
+.signup-form form textarea,
+.signup-form input,
+.signup-form select,
+.signup-form textarea {
     background: #F0F0E9;
     border: medium none;
     color: #696763;
@@ -1452,7 +1455,8 @@ h2.title {
     padding-left: 10px;
     width: 100%;
 }
-.signup-form form textarea {
+.signup-form form textarea,
+.signup-form textarea {
     height: 150px;
 }
 .login-form form span {
@@ -1471,7 +1475,8 @@ h2.title {
 }
 
 .login-form form button,
-.signup-form form button {
+.signup-form form button,
+.signup-form button {
     background: #FE980F;
     border: medium none;
     border-radius: 0;
