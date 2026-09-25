@@ -3,13 +3,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 from django.shortcuts import render, get_object_or_404
-from users.views import register_view, login_view, custom_logout
+from users.views import register_view, login_view, custom_logout, search_advanced, search_advanced_ajax
 from blog.views import blog_list, blog_detail, rate_blog, comment_blog
 from users.models import Product
 
 def index(request):
-    products = Product.objects.order_by('-created_at', '-id')[:6]
-    return render(request, 'index.html', {'products': products})
+    search = (request.GET.get('search') or '').strip()
+
+    if search:
+        products = Product.objects.filter(name__icontains=search).order_by('-created_at', '-id')
+    else:
+        products = Product.objects.order_by('-created_at', '-id')[:6]
+
+    return render(request, 'index.html', {'products': products, 'search': search})
 
 def shop(request):
     return render(request, 'shop.html')
@@ -31,6 +37,8 @@ def product_details(request, pk):
 urlpatterns = [
     path('', index, name='index'),
     path('shop/', shop, name='shop'),
+    path('search-advanced/', search_advanced, name='search_advanced'),
+    path('search-advanced/ajax/', search_advanced_ajax, name='search_advanced_ajax'),
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
     path('product-details/<int:pk>/', product_details, name='product_details'),

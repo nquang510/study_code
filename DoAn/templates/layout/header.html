@@ -177,12 +177,17 @@
               <li>
                 <a href="contact-us.html">Contact</a>
               </li>
+              <li>
+                <a href="{% url 'search_advanced' %}">Search advanced</a>
+              </li>
             </ul>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="search_box pull-right">
-            <input type="text" placeholder="Search" />
+            <form action="{% url 'index' %}" method="get">
+              <input type="text" name="search" placeholder="Search" value="{{ request.GET.search|default:'' }}" />
+            </form>
           </div>
         </div>
       </div>

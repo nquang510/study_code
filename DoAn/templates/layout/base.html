@@ -67,6 +67,57 @@
       });
     });
     </script>
+    <script>
+    var priceXhr = null;
+    var giaDangChon = null;
+
+    function locTheoGia(page) {
+      if (priceXhr) {
+        priceXhr.abort();
+      }
+
+      $("#product-list").css("opacity", 0.4);
+
+      priceXhr = $.ajax({
+        url: "{% url 'search_advanced_ajax' %}",
+        type: "GET",
+        data: {
+          price: giaDangChon[0] + "-" + giaDangChon[1],
+          name: $("#product-list").data("search") || "",
+          page: page || 1
+        },
+        success: function (res) {
+          $("#product-list").html(res.html);
+          $("#product-title").text("Giá $" + giaDangChon[0] + " - $" + giaDangChon[1] + " (" + res.total + ")");
+        },
+        error: function (x, status) {
+          if (status !== "abort") {
+            alert("Lọc theo giá thất bại!");
+          }
+        },
+        complete: function () {
+          $("#product-list").css("opacity", 1);
+        }
+      });
+    }
+
+    $("#sl2").on("slide", function (e) {
+      $("#price-min-label").text("$ " + e.value[0]);
+      $("#price-max-label").text("$ " + e.value[1]);
+    });
+
+    $("#sl2").on("slideStop", function (e) {
+      giaDangChon = e.value;
+      if ($("#product-list").length) {
+        locTheoGia(1);
+      }
+    });
+
+    $("#product-list").on("click", ".pagination a", function (e) {
+      e.preventDefault();
+      locTheoGia($(this).data("page"));
+    });
+    </script>
     {% block extra_js %}{% endblock %}
     
 </body>

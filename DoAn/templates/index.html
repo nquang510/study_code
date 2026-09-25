@@ -71,7 +71,14 @@
 {% block content %}
 					<div class="col-sm-9 padding-right">
 						<div class="features_items"><!--features_items-->
-							<h2 class="title text-center">Features Items</h2>
+							<h2 class="title text-center" id="product-title">
+							{% if search %}
+								Kết quả tìm kiếm: "{{ search }}" ({{ products|length }})
+							{% else %}
+								Features Items
+							{% endif %}
+							</h2>
+							<div id="product-list" data-search="{{ search }}">
 							{% for p in products %}
 							<div class="col-sm-4">
 								<div class="product-image-wrapper">
@@ -112,8 +119,13 @@
 								</div>
 							</div>
 							{% empty %}
+							{% if search %}
+							<p class="text-center">Không tìm thấy sản phẩm.</p>
+							{% else %}
 							<p class="text-center">Chưa có sản phẩm nào.</p>
+							{% endif %}
 							{% endfor %}
+							</div><!--/product-list-->
 						
 						
 						</div><!--features_items-->

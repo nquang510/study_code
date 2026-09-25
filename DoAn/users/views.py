@@ -11,6 +11,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 
 def register_view(request):
     if request.method == "POST":
@@ -471,3 +472,65 @@ def place_order(request):
         "loi_mail": loi_mail,
     })
 
+
+
+#search advanced
+PER_PAGE = 3
+
+PRICE_RANGES = [
+    ("0-50000", "< 50.000"),
+    ("50000-100000", "50.000 - 100.000"),
+    ("100000-200000", "100.000 - 200.000"),
+    ("200000-500000", "200.000 - 500.000"),
+    ("500000-1000000", "500.000 - 1.000.000"),
+]
+
+
+def search_advanced(request):
+    return render(request, "search_advanced.html", {
+        "categories": Category.objects.all(),
+        "brands": Brand.objects.all(),
+        "price_ranges": PRICE_RANGES,
+    })
+
+
+def search_advanced_ajax(request):
+    name        = (request.GET.get("name") or "").strip()
+    price       = request.GET.get("price") or ""
+    id_category = request.GET.get("id_category") or ""
+    id_brand    = request.GET.get("id_brand") or ""
+    status      = request.GET.get("status") or ""
+
+    products = Product.objects.all()
+
+    if name:
+        products = products.filter(name__icontains=name)
+
+    if price:
+        try:
+            gia_min, gia_max = price.split("-")
+            products = products.filter(price__range=(int(gia_min), int(gia_max)))
+        except ValueError:
+            pass
+
+    if id_category.isdigit():
+        products = products.filter(id_category_id=id_category)
+
+    if id_brand.isdigit():
+        products = products.filter(id_brand_id=id_brand)
+
+    if status in ("0", "1"):
+        products = products.filter(status=int(status))
+
+    products = products.order_by("-created_at", "-id")
+
+    paginator = Paginator(products, PER_PAGE)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    html = render_to_string("search_results.html", {"page_obj": page_obj}, request=request)
+
+    return JsonResponse({
+        "status": "ok",
+        "html": html,
+        "total": paginator.count,
+    })

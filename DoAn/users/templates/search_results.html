@@ -1,0 +1,25 @@
+{% for p in page_obj %}
+	{% include 'layout/product_item.html' %}
+{% empty %}
+	<p class="text-center">Không tìm thấy sản phẩm.</p>
+{% endfor %}
+
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="col-sm-12 text-center">
+	<ul class="pagination">
+		{% if page_obj.has_previous %}
+			<li><a href="#" data-page="{{ page_obj.previous_page_number }}">&laquo;</a></li>
+		{% endif %}
+
+		{% for n in page_obj.paginator.page_range %}
+			<li {% if n == page_obj.number %}class="active"{% endif %}>
+				<a href="#" data-page="{{ n }}">{{ n }}</a>
+			</li>
+		{% endfor %}
+
+		{% if page_obj.has_next %}
+			<li><a href="#" data-page="{{ page_obj.next_page_number }}">&raquo;</a></li>
+		{% endif %}
+	</ul>
+</div>
+{% endif %}

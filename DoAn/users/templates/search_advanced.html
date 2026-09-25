@@ -1,0 +1,126 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Search Advanced | E-Shopper{% endblock %}
+
+{% block extra_css %}
+<style>
+	.search-advanced .form-control { margin-bottom: 10px; border-radius: 0; box-shadow: none; }
+	.search-advanced .btn-search { background: #FE980F; color: #fff; border: 0; border-radius: 0; margin-bottom: 20px; }
+	.search-advanced .btn-search:hover { background: #e58a0c; color: #fff; }
+	#search-total { color: #696763; margin-bottom: 15px; }
+	#search-results.loading { opacity: 0.4; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="col-sm-9 padding-right">
+	<div class="features_items">
+		<h2 class="title text-center">Features Items</h2>
+
+		<form id="search-form" class="search-advanced row">
+			<div class="col-sm-3">
+				<input type="text" name="name" class="form-control" placeholder="Name" />
+			</div>
+			<div class="col-sm-3">
+				<select name="price" class="form-control">
+					<option value="">Choose price</option>
+					{% for value, label in price_ranges %}
+						<option value="{{ value }}">{{ label }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<select name="id_category" class="form-control">
+					<option value="">Category</option>
+					{% for c in categories %}
+						<option value="{{ c.id }}">{{ c.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<select name="id_brand" class="form-control">
+					<option value="">Brand</option>
+					{% for b in brands %}
+						<option value="{{ b.id }}">{{ b.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<select name="status" class="form-control">
+					<option value="">Status</option>
+					<option value="0">New</option>
+					<option value="1">Sale</option>
+				</select>
+			</div>
+			<div class="col-sm-12">
+				<button type="submit" class="btn btn-search">Search</button>
+			</div>
+		</form>
+
+		<p id="search-total"></p>
+		<div id="search-results" class="row"></div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+	var xhr = null;
+	var timer = null;
+
+	function timKiem(page) {
+		if (xhr) {
+			xhr.abort();
+		}
+		var data = $("#search-form").serialize() + "&page=" + (page || 1);
+
+		$("#search-results").addClass("loading");
+
+		xhr = $.ajax({
+			url: "{% url 'search_advanced_ajax' %}",
+			type: "GET",
+			data: data,
+			success: function (res) {
+				$("#search-results").html(res.html);
+				$("#search-total").text("Tìm thấy " + res.total + " sản phẩm");
+			},
+			error: function (x, status) {
+				if (status !== "abort") {
+					$("#search-results").html('<p class="text-center">Có lỗi xảy ra, vui lòng thử lại.</p>');
+				}
+			},
+			complete: function () {
+				$("#search-results").removeClass("loading");
+			}
+		});
+	}
+
+	$(function () {
+		// Trang mặc định hiển thị tất cả sản phẩm
+		timKiem(1);
+
+		$("#search-form select").on("change", function () {
+			timKiem(1);
+		});
+
+		$("#search-form input[name=name]").on("input", function () {
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				timKiem(1);
+			}, 400);
+		});
+
+		$("#search-form").on("submit", function (e) {
+			e.preventDefault();
+			clearTimeout(timer);
+			timKiem(1);
+		});
+
+		$("#search-results").on("click", ".pagination a", function (e) {
+			e.preventDefault();
+			timKiem($(this).data("page"));
+		});
+	});
+</script>
+{% endblock %}
