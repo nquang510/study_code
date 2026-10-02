@@ -62,6 +62,16 @@ class UserLoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Password"}),
     )
 
+    # AuthenticationForm goi ham nay sau khi kiem tra dung username/password
+    # -> chan tai khoan admin dang nhap o frontend
+    def confirm_login_allowed(self, user):
+        super().confirm_login_allowed(user)
+        if user.is_staff or user.is_superuser:
+            raise forms.ValidationError(
+                "Tài khoản admin không được đăng nhập ở đây. Vui lòng đăng nhập tại trang quản trị.",
+                code="admin_account",
+            )
+
 
 class UserUpdateForm(forms.ModelForm):
 

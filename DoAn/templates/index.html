@@ -70,6 +70,9 @@
 
 {% block content %}
 					<div class="col-sm-9 padding-right">
+						{% for message in messages %}
+							<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">{{ message }}</div>
+						{% endfor %}
 						<div class="features_items"><!--features_items-->
 							<h2 class="title text-center" id="product-title">
 							{% if search %}
