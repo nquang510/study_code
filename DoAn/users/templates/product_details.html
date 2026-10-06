@@ -35,10 +35,9 @@
 
 {% block content %}
 <div class="col-sm-9 padding-right">
-					<div class="product-details"><!--product-details-->
+					<div class="product-details">
 						<div class="col-sm-5">
 							<div class="view-product">
-								<!-- Hình lớn: click mở hình fullsize -->
 								<a id="zoom-link" href="/media/products/{{ product.images.0 }}">
 									<img id="main-image" src="/media/products/{{ product.images.0 }}" alt="{{ product.name }}" />
 								</a>
@@ -59,7 +58,7 @@
 						</div>
 
 						<div class="col-sm-7">
-							<div class="product-information"><!--/product-information-->
+							<div class="product-information">
 								{% if product.status == 0 %}
 									<img src="{% static 'images/product-details/new.jpg' %}" class="newarrival" alt="" />
 								{% endif %}
@@ -86,11 +85,11 @@
 								<p><b>Condition:</b> {% if product.status == 1 %}Sale {{ product.sale }}%{% else %}New{% endif %}</p>
 								<p><b>Company:</b> {{ product.company|default_if_none:'' }}</p>
 								<p><b>Detail:</b> {{ product.detail|default_if_none:'' }}</p>
-							</div><!--/product-information-->
+							</div>
 						</div>
-					</div><!--/product-details-->
+					</div>
 					
-					<div class="category-tab shop-details-tab"><!--category-tab-->
+					<div class="category-tab shop-details-tab">
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li><a href="#details" data-toggle="tab">Details</a></li>
@@ -278,9 +277,9 @@
 							</div>
 							
 						</div>
-					</div><!--/category-tab-->
+					</div>
 					
-					<div class="recommended_items"><!--recommended_items-->
+					<div class="recommended_items">
 						<h2 class="title text-center">recommended items</h2>
 						
 						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
@@ -369,11 +368,10 @@
 								<i class="fa fa-angle-right"></i>
 							  </a>			
 						</div>
-					</div><!--/recommended_items-->
+					</div>
 					
 				</div>
 
-<!-- popup hien hinh full size -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">

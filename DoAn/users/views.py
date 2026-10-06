@@ -25,7 +25,6 @@ def register_view(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data["password"])
 
-            # Gán quyền
             user.is_superuser = False
             user.is_staff = False
 
@@ -71,7 +70,6 @@ def forgot_password_view(request):
 
 
 def gui_mail_quen_mat_khau(request, user):
-    # Tạo link chứa uid + token, token tự hết hạn sau khi đổi mật khẩu
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
     link = request.build_absolute_uri(reverse("reset_password", args=[uid, token]))
@@ -96,7 +94,6 @@ def reset_password_view(request, uidb64, token):
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    # Link sai hoặc đã dùng rồi
     if user is None or not default_token_generator.check_token(user, token):
         return render(request, "reset_password.html", {"link_hop_le": False})
 
@@ -457,7 +454,6 @@ def checkout_view(request):
         "sub_total": sub_total,
     }
 
-    # Nếu chưa đăng nhập -> Hiển thị form register cho người dùng
     if not request.user.is_authenticated:
         context["form"] = UserRegisterForm()
 
@@ -488,7 +484,6 @@ def gui_mail_don_hang(user, items, sub_total, history):
 def place_order(request):
     items, sub_total = lay_cart_items(request)
 
-    # Giỏ hàng trống không oder được
     if not items:
         messages.error(request, "Giỏ hàng trống không thể đặt hàng.")
         return redirect("cart")
@@ -496,7 +491,6 @@ def place_order(request):
     if request.user.is_authenticated:
         user = request.user
     else:
-        # Chưa có tài khoàn -> đăng ký
         form = UserRegisterForm(request.POST, request.FILES)
         if not form.is_valid():
             return render(request, "checkout.html", {
@@ -511,7 +505,6 @@ def place_order(request):
         user.is_staff = False
         user.save()
 
-        # Đăng nhập cho user vừa đăng ký
         login(request, user)
 
     ten = (f"{user.first_name} {user.last_name}").strip() or user.username
@@ -530,7 +523,6 @@ def place_order(request):
     except Exception as e:
         loi_mail = str(e)
 
-    # Order xong xóa giỏ hàng trong session
     request.session["cart"] = {}
 
     return render(request, "order_success.html", {
@@ -542,7 +534,6 @@ def place_order(request):
 
 
 
-#search advanced
 PER_PAGE = 3
 
 PRICE_RANGES = [

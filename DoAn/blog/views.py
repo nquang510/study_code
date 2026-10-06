@@ -44,7 +44,6 @@ def blog_detail(request, pk):
     if request.user.is_authenticated:
         check = Rate.objects.filter(id_blog=blog, id_user=request.user).exists()
 
-    # chi lay comment cha, comment con lay qua cmt.replies.all trong template
     comments = (
         Comment.objects.filter(id_blog=blog, parent__isnull=True)
         .select_related('id_user')

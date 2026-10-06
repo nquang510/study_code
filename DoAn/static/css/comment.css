@@ -1,7 +1,4 @@
-/* ===== COMMENT ===== */
 
-/* Avatar user co the la anh bat ky (vd screenshot 1307x399) -> phai ep kich thuoc,
-   neu khong anh se tran ra va day .media-body ra ngoai (bi cat vi .media overflow:hidden) */
 .response-area .media .pull-left {
     display: block;
     float: left;
@@ -24,7 +21,6 @@
     overflow: hidden;
 }
 
-/* comment dai / khong co dau cach van phai xuong dong */
 .response-area .media-body p {
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -35,7 +31,6 @@
     margin-top: 5px;
 }
 
-/* ===== FORM COMMENT ===== */
 #replying-to {
     clear: both;
     float: left;

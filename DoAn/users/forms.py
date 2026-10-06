@@ -37,7 +37,7 @@ class UserRegisterForm(forms.ModelForm):
     def clean_avatar(self):
         avatar = self.cleaned_data.get("avatar")
         if avatar:
-            if avatar.size > 2 * 1024 * 1024:  # 2MB
+            if avatar.size > 2 * 1024 * 1024:
                 raise forms.ValidationError("Kích thước ảnh không được vượt quá 2MB.")
             if not avatar.name.lower().endswith(('.jpg', '.jpeg', '.png')):
                 raise forms.ValidationError("Định dạng ảnh không hợp lệ. Chỉ chấp nhận các định dạng: .jpg, .jpeg, .png.")
@@ -62,8 +62,6 @@ class UserLoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Password"}),
     )
 
-    # AuthenticationForm goi ham nay sau khi kiem tra dung username/password
-    # -> chan tai khoan admin dang nhap o frontend
     def confirm_login_allowed(self, user):
         super().confirm_login_allowed(user)
         if user.is_staff or user.is_superuser:

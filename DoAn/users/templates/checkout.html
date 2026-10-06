@@ -13,7 +13,7 @@
 			  <li><a href="{% url 'index' %}">Home</a></li>
 			  <li class="active">Check out</li>
 			</ol>
-		</div><!--/breadcrums-->
+		</div>
 
 		<form action="{% url 'place_order' %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
@@ -156,5 +156,5 @@
 			{% endif %}
 		</form>
 	</div>
-</section> <!--/#cart_items-->
+</section>
 {% endblock %}

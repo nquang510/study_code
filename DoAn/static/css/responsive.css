@@ -1,9 +1,7 @@
-/* lg */
 
 @media (min-width: 1200px) {}
 
 
-/* md */
 
 @media (min-width: 992px) and (max-width: 1199px) {
     .header-middle .btn-group .btn {
@@ -32,7 +30,6 @@
 }
 
 
-/* sm */
 
 @media (min-width: 768px) and (max-width: 991px) {
     .shop-menu{
@@ -112,7 +109,6 @@
 }
 
 
-/* xs */
 
 @media (max-width: 767px) {
     #cart_items .cart_info table{
@@ -261,7 +257,6 @@
 }
 
 
-/* XS Portrait */
 
 @media (max-width: 480px) {
     .bill-to{

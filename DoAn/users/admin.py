@@ -6,12 +6,10 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
 from .models import Country, User, Category, Brand, Product, History
 
-# an link "View site" tren trang admin (admin khong duoc vao frontend)
 admin.site.site_url = None
 
 
 def xoa_hinh_san_pham(product):
-    # xoa file anh trong media/products khi xoa san pham
     save_folder = os.path.join(settings.MEDIA_ROOT, "products")
     for img in product.images or []:
         path = os.path.join(save_folder, img)
@@ -24,7 +22,6 @@ class CountryAdmin(admin.ModelAdmin):
 admin.site.register(Country, CountryAdmin)
 
 
-# ===== List user =====
 class UserAdmin(BaseUserAdmin):
     list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'phone', 'id_country', 'level', 'is_active')
     list_display_links = ('id', 'username')
@@ -32,7 +29,6 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('username', 'email', 'first_name', 'last_name', 'phone')
     ordering = ('-id',)
 
-    # them cac field rieng cua User vao form edit / add
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Thông tin thêm', {'fields': ('avatar', 'phone', 'id_country')}),
     )
@@ -46,7 +42,6 @@ class UserAdmin(BaseUserAdmin):
             return format_html('<b style="color:#d9534f;">{}</b>', 'Admin')
         return format_html('<span style="color:#5cb85c;">{}</span>', 'Member')
 
-    # xoa user thi product cua user cung bi xoa (CASCADE) -> xoa luon file anh
     def delete_model(self, request, obj):
         for product in obj.products.all():
             xoa_hinh_san_pham(product)
@@ -62,12 +57,10 @@ admin.site.register(Category)
 admin.site.register(Brand)
 
 
-# ===== List product =====
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'hinh', 'name', 'member', 'price', 'id_category', 'id_brand', 'trang_thai', 'created_at')
     list_display_links = ('id', 'name')
     list_filter = ('status', 'id_category', 'id_brand')
-    # tim kiem product theo ten member (username / ho / ten)
     search_fields = ('id_user__username', 'id_user__first_name', 'id_user__last_name')
     search_help_text = 'Tìm theo tên member (username, họ, tên)'
     list_select_related = ('id_user', 'id_category', 'id_brand')
@@ -104,7 +97,6 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 
 
-# ===== History mua hang =====
 class HistoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email', 'phone', 'id_user', 'price', 'created_at')
     list_display_links = ('id', 'name')
@@ -113,7 +105,6 @@ class HistoryAdmin(admin.ModelAdmin):
     list_select_related = ('id_user',)
     readonly_fields = ('id_user', 'name', 'email', 'phone', 'price', 'created_at')
 
-    # lich su mua hang chi de xem, khong cho them / sua tay
     def has_add_permission(self, request):
         return False
 

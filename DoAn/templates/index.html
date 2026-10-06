@@ -3,7 +3,7 @@
 
 {% block title %}Home | E-Shopper{% endblock %}
 
-<section id="slider"><!--slider-->
+<section id="slider">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
@@ -66,14 +66,14 @@
 				</div>
 			</div>
 		</div>
-	</section><!--/slider-->
+	</section>
 
 {% block content %}
 					<div class="col-sm-9 padding-right">
 						{% for message in messages %}
 							<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">{{ message }}</div>
 						{% endfor %}
-						<div class="features_items"><!--features_items-->
+						<div class="features_items">
 							<h2 class="title text-center" id="product-title">
 							{% if search %}
 								Kết quả tìm kiếm: "{{ search }}" ({{ products|length }})
@@ -128,12 +128,12 @@
 							<p class="text-center">Chưa có sản phẩm nào.</p>
 							{% endif %}
 							{% endfor %}
-							</div><!--/product-list-->
+							</div>
 						
 						
-						</div><!--features_items-->
+						</div>
 					
-					<div class="category-tab"><!--category-tab-->
+					<div class="category-tab">
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#tshirt" data-toggle="tab">T-Shirt</a></li>
@@ -419,9 +419,9 @@
 								</div>
 							</div>
 						</div>
-					</div><!--/category-tab-->
+					</div>
 					
-					<div class="recommended_items"><!--recommended_items-->
+					<div class="recommended_items">
 						<h2 class="title text-center">recommended items</h2>
 						
 						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
@@ -516,7 +516,7 @@
 								<i class="fa fa-angle-right"></i>
 							  </a>			
 						</div>
-					</div><!--/recommended_items-->
+					</div>
 					
 				</div>
 

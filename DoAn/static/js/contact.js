@@ -14,7 +14,6 @@ jQuery(function ($) {
 
 });
 
-// Google Map Customization
 (function () {
 
     var map;
@@ -37,7 +36,6 @@ jQuery(function ($) {
     map.addMarker({
         lat: 43.1580159,
         lng: -77.6030777,
-        //icon: image,
         animation: google.maps.Animation.DROP,
         verticalAlign: 'bottom',
         horizontalAlign: 'center',
