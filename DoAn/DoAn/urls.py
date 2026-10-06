@@ -24,7 +24,6 @@ def shop(request):
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
-    # tinh gia sau khi giam de khoi phai tinh trong template
     gia_sale = None
     if product.status == 1 and product.sale:
         gia_sale = product.price * (100 - product.sale) / 100

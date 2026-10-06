@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'users.middleware.PhanQuyenMiddleware',  # phai dat sau Authentication + Message
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

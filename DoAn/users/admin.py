@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Country, User, Category, Brand, Product, History
 
+# an link "View site" tren trang admin (admin khong duoc vao frontend)
+admin.site.site_url = None
+
 
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('name',)
