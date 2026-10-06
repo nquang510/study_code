@@ -86,3 +86,35 @@ class UserUpdateForm(forms.ModelForm):
             if not avatar.name.lower().endswith((".jpg", ".jpeg", ".png")):
                 raise forms.ValidationError("Định dạng ảnh không hợp lệ. Chỉ chấp nhận: .jpg, .jpeg, .png.")
         return avatar
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"placeholder": "Nhập email của bạn"}),
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not User.objects.filter(email__iexact=email, is_active=True).exists():
+            raise forms.ValidationError("Email không tồn tại trong hệ thống.")
+        return email
+
+
+class ResetPasswordForm(forms.Form):
+    new_password = forms.CharField(
+        label="Mật khẩu mới",
+        widget=forms.PasswordInput(attrs={"placeholder": "Mật khẩu mới"}),
+    )
+    confirm_password = forms.CharField(
+        label="Xác nhận mật khẩu",
+        widget=forms.PasswordInput(attrs={"placeholder": "Xác nhận mật khẩu"}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password")
+        confirm_password = cleaned_data.get("confirm_password")
+        if new_password and confirm_password and new_password != confirm_password:
+            self.add_error("confirm_password", "Mật khẩu xác nhận không khớp.")
+        return cleaned_data

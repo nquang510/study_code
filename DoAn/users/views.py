@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from .forms import UserLoginForm, UserRegisterForm, UserUpdateForm
+from .forms import UserLoginForm, UserRegisterForm, UserUpdateForm, ForgotPasswordForm, ResetPasswordForm
 from .models import Product, Category, Brand, History
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -11,7 +11,12 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.core.paginator import Paginator
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 
 def register_view(request):
     if request.method == "POST":
@@ -42,6 +47,69 @@ def login_view(request):
     else:
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})
+
+
+def forgot_password_view(request):
+    if request.method == "POST":
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            users = get_user_model().objects.filter(email__iexact=email, is_active=True)
+
+            try:
+                for user in users:
+                    gui_mail_quen_mat_khau(request, user)
+            except Exception as e:
+                messages.error(request, f"Gửi mail thất bại: {e}")
+                return render(request, "forgot_password.html", {"form": form})
+
+            messages.success(request, "Đã gửi link đặt lại mật khẩu, vui lòng kiểm tra email của bạn.")
+            return redirect("forgot_password")
+    else:
+        form = ForgotPasswordForm()
+    return render(request, "forgot_password.html", {"form": form})
+
+
+def gui_mail_quen_mat_khau(request, user):
+    # Tạo link chứa uid + token, token tự hết hạn sau khi đổi mật khẩu
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+    link = request.build_absolute_uri(reverse("reset_password", args=[uid, token]))
+
+    subject = "Đặt lại mật khẩu - E-Shopper"
+    text_content = f"Chào {user.username}, click vào link sau để đặt lại mật khẩu: {link}"
+    html_content = render_to_string("emails/reset_password_email.html", {
+        "user": user,
+        "link": link,
+    })
+
+    msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, [user.email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+def reset_password_view(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    # Link sai hoặc đã dùng rồi
+    if user is None or not default_token_generator.check_token(user, token):
+        return render(request, "reset_password.html", {"link_hop_le": False})
+
+    if request.method == "POST":
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            user.set_password(form.cleaned_data["new_password"])
+            user.save()
+            messages.success(request, "Đổi mật khẩu thành công, vui lòng đăng nhập lại.")
+            return redirect("login")
+    else:
+        form = ResetPasswordForm()
+    return render(request, "reset_password.html", {"form": form, "link_hop_le": True})
 
 
 def custom_logout(request):

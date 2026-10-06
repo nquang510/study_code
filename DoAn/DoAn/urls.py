@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 from django.shortcuts import render, get_object_or_404
-from users.views import register_view, login_view, custom_logout, search_advanced, search_advanced_ajax
+from users.views import register_view, login_view, custom_logout, forgot_password_view, reset_password_view, search_advanced, search_advanced_ajax
 from blog.views import blog_list, blog_detail, rate_blog, comment_blog
 from users.models import Product
 
@@ -41,6 +41,8 @@ urlpatterns = [
     path('search-advanced/ajax/', search_advanced_ajax, name='search_advanced_ajax'),
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
+    path('forgot-password/', forgot_password_view, name='forgot_password'),
+    path('reset-password/<uidb64>/<token>/', reset_password_view, name='reset_password'),
     path('product-details/<int:pk>/', product_details, name='product_details'),
     path('blog/', blog_list, name='blog_list'),
     path('blog/<int:pk>/', blog_detail, name='blog_detail'),
